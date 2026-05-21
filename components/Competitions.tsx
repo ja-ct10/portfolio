@@ -1,0 +1,316 @@
+"use client";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { X, Medal, Award, Trophy, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+
+type Competition = {
+  id: number;
+  icon: React.ReactNode;
+  placement: string;
+  year: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  details: string;
+  certificates: string[];
+};
+
+const competitions: Competition[] = [
+  {
+    id: 1,
+    icon: <Medal size={20} />,
+    placement: "2ND",
+    year: "2026",
+    title: "Android Hackathon - 2nd Placer",
+    subtitle: "Main Developer",
+    description: "Built an e-commerce mobile app under 5 hours with a 3-person team.",
+    details: "Competed against 20+ teams in a 24-hour build sprint. Our team delivered a full-stack productivity web app with authentication, real-time updates, and a polished UI. I led the backend and database schema, integrating Node.js with PostgreSQL. We took home 1st place for technical execution, design, and presentation.",
+    certificates: [
+      "/certificates/android-hackathon-cert.jpg",
+      "/images/android-hackathon.jpg",
+    ],
+  },
+  {
+    id: 2,
+    icon: <Medal size={20} />,
+    placement: "2ND",
+    year: "2026",
+    title: "Tagisan ng Talino: Code Fest - 2nd Placer",
+    subtitle: "Main Developer",
+    description: "Built an e-commerce mobile app under 5 hours with a 3-person team.",
+    details: "Competed in a regional CTF event with challenges spanning web exploitation, binary reversing, forensics, and cryptography. Our team solved 18 out of 22 challenges, placing 2nd overall out of 35 participating teams.",
+    certificates: [
+      "/certificates/code-fest-cert.jpg",
+      "/images/code-fest.jpg",
+    ],
+  },
+  {
+    id: 3,
+    icon: <Award size={20} />,
+    placement: "PARTICIPANT",
+    year: "2025",
+    title: "hack-it! The New Era of Banking - Participant",
+    subtitle: "Main Developer, Database Designer",
+    description: "Built a KYC Life Insurance ",
+    details: "We’ve competed with 12 teams in hack-It! – The New Era of Banking with LifeGard as our contribution, an AI-assisted life insurance system designed to improve underwriting efficiency and application processing speed. LifeGard uses machine learning trained on historical approved and rejected applications to adapt risk assessment based on each insurance company’s criteria, including factors such as age and medical conditions. It serves as a decision-support tool that streamlines evaluation while still requiring human underwriters for complex cases such as fraud detection and final approval.",
+    certificates: [
+      "/certificates/hackathon-cert.jpg",
+      "/images/hackathon-1.jpg",
+    ],
+  },
+];
+
+function Modal({ selected, onClose }: { selected: Competition; onClose: () => void }) {
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const total = selected.certificates.length;
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return createPortal(
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "rgba(0,0,0,0.85)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 24,
+        backdropFilter: "blur(6px)",
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          borderRadius: 16,
+          padding: "28px 32px",
+          maxWidth: 600,
+          width: "100%",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          position: "relative",
+        }}
+      >
+        {/* Close */}
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute", top: 16, right: 16,
+            width: 32, height: 32, borderRadius: "50%",
+            border: "1px solid var(--border)",
+            background: "var(--bg)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", color: "var(--text-primary)",
+          }}
+        >
+          <X size={15} />
+        </button>
+
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 10,
+            background: "var(--tag-bg)",
+            border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: "var(--text-primary)",
+          }}>
+            {selected.icon}
+          </div>
+          <span style={{
+            fontFamily: "var(--font-mono), monospace",
+            fontSize: 11, fontWeight: 600,
+            letterSpacing: "0.1em",
+            color: "var(--text-secondary)",
+            border: "1px solid var(--border)",
+            borderRadius: 999,
+            padding: "4px 12px",
+          }}>
+            {selected.placement} · {selected.year}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 style={{
+          fontFamily: "var(--font-heading), serif",
+          fontSize: 26, fontWeight: 700,
+          letterSpacing: "-0.02em",
+          color: "var(--text-primary)",
+          marginBottom: 6,
+        }}>
+          {selected.title}
+        </h3>
+        <p style={{
+          fontFamily: "var(--font-mono), monospace",
+          fontSize: 11, letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--text-secondary)",
+          marginBottom: 20,
+        }}>
+          {selected.subtitle}
+        </p>
+
+        {/* Photo slider */}
+        <div style={{ marginBottom: 20 }}>
+          {/* Image */}
+          <div style={{
+            width: "100%", height: 260,
+            borderRadius: 12, overflow: "hidden",
+            border: "1px solid var(--border)",
+            position: "relative",
+            background: "var(--bg)",
+            marginBottom: 12,
+          }}>
+            <Image
+              src={selected.certificates[photoIndex]}
+              alt={`${selected.title} photo ${photoIndex + 1}`}
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+
+          {/* Nav controls */}
+          {total > 1 && (
+            <div style={{
+              display: "flex", alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 12,
+            }}>
+              {/* Counter */}
+              <span style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: 11, color: "var(--text-muted)",
+                letterSpacing: "0.1em",
+              }}>
+                {photoIndex + 1} / {total}
+              </span>
+
+              {/* Buttons */}
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => setPhotoIndex(i => Math.max(0, i - 1))}
+                  disabled={photoIndex === 0}
+                  style={{
+                    width: 36, height: 36,
+                    borderRadius: "50%",
+                    border: "1px solid var(--border)",
+                    background: "var(--bg)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: photoIndex === 0 ? "not-allowed" : "pointer",
+                    color: photoIndex === 0 ? "var(--text-muted)" : "var(--text-primary)",
+                    opacity: photoIndex === 0 ? 0.4 : 1,
+                    transition: "border-color 0.18s ease",
+                  }}
+                  onMouseEnter={e => {
+                    if (photoIndex !== 0) e.currentTarget.style.borderColor = "var(--text-primary)";
+                  }}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button
+                  onClick={() => setPhotoIndex(i => Math.min(total - 1, i + 1))}
+                  disabled={photoIndex === total - 1}
+                  style={{
+                    width: 36, height: 36,
+                    borderRadius: "50%",
+                    border: "1px solid var(--border)",
+                    background: "var(--bg)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: photoIndex === total - 1 ? "not-allowed" : "pointer",
+                    color: photoIndex === total - 1 ? "var(--text-muted)" : "var(--text-primary)",
+                    opacity: photoIndex === total - 1 ? 0.4 : 1,
+                    transition: "border-color 0.18s ease",
+                  }}
+                  onMouseEnter={e => {
+                    if (photoIndex !== total - 1) e.currentTarget.style.borderColor = "var(--text-primary)";
+                  }}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Details */}
+        <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.75 }}>
+          {selected.details}
+        </p>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+export default function Competitions() {
+  const [selected, setSelected] = useState<Competition | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  return (
+    <section className="animate-fade-up delay-4">
+      {mounted && selected && (
+        <Modal selected={selected} onClose={() => setSelected(null)} />
+      )}
+
+      <div className="card p-7">
+        <div className="section-subtitle">06 — Recognition</div>
+
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="section-title">Competitions</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {competitions.map((comp) => (
+            <div
+              key={comp.id}
+              onClick={() => setSelected(comp)}
+              className="group bg-[var(--bg)] border border-[var(--border)] rounded-[12px] p-5 cursor-pointer transition duration-200 ease-out hover:border-[var(--text-muted)] hover:-translate-y-1"
+            >
+              {/* Top row */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)]">
+                  {comp.icon}
+                </div>
+                <span className="text-[10px] font-semibold tracking-[0.1em] text-[var(--text-secondary)] border border-[var(--border)] rounded-full px-3 py-1">
+                  {comp.placement} · {comp.year}
+                </span>
+              </div>
+
+              <h3 style={{
+                fontFamily: "var(--font-heading), serif",
+                fontSize: 20, fontWeight: 700,
+                letterSpacing: "-0.01em",
+                color: "var(--text-primary)",
+                marginBottom: 6,
+              }}>
+                {comp.title}
+              </h3>
+
+              <p style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: 10, letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--text-secondary)",
+                marginBottom: 12,
+              }}>
+                {comp.subtitle}
+              </p>
+
+              <p style={{ color: "var(--text-secondary)", fontSize: 13, lineHeight: 1.65 }}>
+                {comp.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
