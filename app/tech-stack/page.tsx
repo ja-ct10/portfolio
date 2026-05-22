@@ -4,7 +4,7 @@ const stacks = {
   Frontend: ["HTML/CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"],
   Backend: ["Java", "C#", "Python", "Node.js", "PostgreSQL", "SQL Server", "Express.js", "MySQL"],
   Mobile: ["Android (Java)", "Firebase"],
-  DeveloperTools: ["Git", "GitHub", "VS Code", "Jira", "Postman", "Figma", "Trello"],
+  DeveloperTools: ["Git", "GitHub", "VS Code", "Kiro", "Jira", "Postman", "Figma", "Trello"],
 };
 
 export default function TechStackPage() {

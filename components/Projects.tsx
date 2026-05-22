@@ -5,13 +5,13 @@ const projects = [
   { 
     name: "Enroll360",
     description: "Web-based school enrollment system",
-    tags: ["WEB", "SQL"],
+    tags: ["WEB", "LARAVEL", "MYSQL"],
     href: "https://github.com/ja-ct10/School-Management-System.git",
   },
   {
     name: "iBrgy",
     description: "Mobile app for certificate requests and communication in barangay",
-    tags: ["MOBILE", "ANDROID"],
+    tags: ["MOBILE", "ANDROID", "FIREBASE"],
     href: "https://github.com/ja-ct10/Barangay-Management-System.git",
   },
   {

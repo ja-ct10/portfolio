@@ -9,6 +9,7 @@ import Marquee from "@/components/Marquee";
 import Contact from "@/components/Contact";
 import Stats from "@/components/Stats";
 import Competitions from "@/components/Competitions";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Home() {
   return (
@@ -52,6 +53,7 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }

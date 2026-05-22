@@ -1,9 +1,10 @@
 "use client";
 import { Download, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero() {
+  const [typingText, setTypingText] = useState("");
   const photoRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -25,9 +26,76 @@ export default function Hero() {
     el.style.transform = "perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)";
   };
 
+  useEffect(() => {
+    const sequence = [
+      { full: "BS INFORMATION TECHNOLOGY", eraseTo: "", pause: 1400 },
+      { full: "ASPIRING BACKEND DEVELOPER", eraseTo: "ASPIRING ", pause: 1400 },
+      { full: "ASPIRING DATABASE DESIGNER", eraseTo: "", pause: 1400 },
+    ];
+
+    let active = true;
+    let step = 0;
+    let mode: "typing" | "erasing" = "typing";
+    let index = 0;
+    let currentValue = "";
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const getNextPrefix = (nextFull: string, current: string) => {
+      if (nextFull.startsWith(current)) return current.length;
+      return 0;
+    };
+
+    const tick = () => {
+      if (!active) return;
+      const item = sequence[step];
+
+      if (mode === "typing") {
+        if (index < item.full.length) {
+          index += 1;
+          currentValue = item.full.slice(0, index);
+          setTypingText(currentValue);
+          timeoutId = setTimeout(tick, 55);
+          return;
+        }
+
+        timeoutId = setTimeout(() => {
+          mode = "erasing";
+          timeoutId = setTimeout(tick, 32);
+        }, item.pause);
+        return;
+      }
+
+      const keepLen = item.eraseTo.length;
+      if (index > keepLen) {
+        index -= 1;
+        currentValue = item.full.slice(0, index);
+        setTypingText(currentValue);
+        timeoutId = setTimeout(tick, 32);
+        return;
+      }
+
+      currentValue = item.full.slice(0, keepLen);
+      setTypingText(currentValue);
+      step = (step + 1) % sequence.length;
+      const nextItem = sequence[step];
+      index = getNextPrefix(nextItem.full, currentValue);
+      currentValue = nextItem.full.slice(0, index);
+      setTypingText(currentValue);
+      mode = "typing";
+      timeoutId = setTimeout(tick, 55);
+    };
+
+    tick();
+
+    return () => {
+      active = false;
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <>
-      <section className="animate-fade-up delay-1 overflow-hidden relative min-h-[340px] flex flex-col gap-8 rounded-[24px] bg-[var(--surface)] p-6 sm:p-8 lg:p-[52px] md:flex-row md:items-center md:justify-between">
+      <section className="animate-fade-up delay-1 overflow-hidden relative min-h-[340px] flex flex-col gap-8 hero-grid p-6 sm:p-8 lg:p-[52px] md:flex-row md:items-center md:justify-between">
         {/* Left content */}
         <div className="flex-1 z-10 min-w-0">
           {/* Location — Roboto Mono */}
@@ -41,6 +109,11 @@ export default function Hero() {
             Julie Ann<br />
             <span style={{ fontStyle: "italic", fontWeight: 700, color: "#959595" }}>Tiron.</span>
           </h1>
+
+          <div className="section-subtitle hero-typewriter">
+            <span className="typewriter-text">{typingText}</span>
+            <span className="typewriter-cursor">|</span>
+          </div>
 
           {/* Social icons */}
           <div className="flex flex-wrap gap-4 mt-4 mb-7">
