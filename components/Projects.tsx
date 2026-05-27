@@ -159,7 +159,7 @@ export default function Projects() {
   return (
     <section className="animate-fade-up delay-2">
       <div className="card p-7">
-        <div className="section-subtitle mb-2">04 — Selected Work</div>
+        <div className="section-subtitle mb-2">05 — Selected Work</div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
           <h2 className="section-title">Projects</h2>

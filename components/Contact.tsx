@@ -107,7 +107,7 @@ export default function Contact() {
         {/* Header row — label + badge perfectly aligned */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
           <div className="section-subtitle" style={{ marginBottom: 0 }}>
-            07 — Get in Touch
+            08 — Get in Touch
           </div>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 10,

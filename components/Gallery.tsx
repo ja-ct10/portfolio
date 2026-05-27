@@ -32,7 +32,7 @@ export default function Gallery() {
   return (
     <section className="animate-fade-up delay-5">
       <div className="section-subtitle">
-        06 — Moments
+        07 — Moments
       </div>
 
       {/* Title row with buttons aligned right */}
