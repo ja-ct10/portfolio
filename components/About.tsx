@@ -23,6 +23,8 @@ export default function About() {
             className="about-photo-wrap"
             onHoverStart={() => setHovered(true)}
             onHoverEnd={() => setHovered(false)}
+            onTouchStart={() => setHovered(true)}
+            onTouchEnd={() => setTimeout(() => setHovered(false), 600)}
             style={{
               position: "relative",
               flexShrink: 0,

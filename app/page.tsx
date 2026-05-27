@@ -77,6 +77,16 @@ function Reveal({
   );
 }
 
+function SectionSeparator() {
+  return (
+    <div className="section-separator">
+      <div className="section-separator-line">
+        <div className="section-separator-glow" />
+      </div>
+    </div>
+  );
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -104,34 +114,46 @@ export default function Home() {
           <About />
         </Reveal>
 
+        <SectionSeparator />
+
         <Reveal
-          className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px] mb-5 items-start"
+          className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px] pt-16 mb-5 items-start"
         >
           <TechStack />
           <SocialLinks />
         </Reveal>
 
-        <Reveal className="mb-5">
+        <Reveal className="pt-8 mb-5">
           <Stats />
         </Reveal>
 
-        <Reveal className="mb-5">
+        <SectionSeparator />
+
+        <Reveal className="pt-16 mb-5">
           <Education />
         </Reveal>
 
-        <Reveal className="mb-5">
+        <SectionSeparator />
+
+        <Reveal className="pt-16 mb-5">
           <Projects />
         </Reveal>
 
-        <Reveal className="mb-5">
+        <SectionSeparator />
+
+        <Reveal className="pt-16 mb-5">
           <Competitions />
         </Reveal>
 
-        <Reveal className="mb-10">
+        <SectionSeparator />
+
+        <Reveal className="pt-16 mb-10">
           <Gallery />
         </Reveal>
 
-        <Reveal className="mb-10">
+        <SectionSeparator />
+
+        <Reveal className="pt-16 mb-10">
           <Contact />
         </Reveal>
 

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { X, Medal, Award, Trophy, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, Medal, Award, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 type Competition = {
@@ -26,10 +26,7 @@ const competitions: Competition[] = [
     subtitle: "Main Developer",
     description: "Built an e-commerce mobile-based platform under 5 hours with a 3-person team.",
     details: "Within a limited time, we were tasked with designing and developing a mobile application based on an e-commerce platform, with the goal of creating a functional and user-friendly app that demonstrates a complete ordering process during the Android Hackathon, a competition under Collaboratech 2026. We were able to create an application named ShopLift, where I served as the main developer, and our team won 2nd place.",
-    certificates: [
-      "/certificates/android-hackathon-cert.jpg",
-      "/images/android-hackathon.jpg",
-    ],
+    certificates: ["/certificates/android-hackathon-cert.jpg", "/images/android-hackathon.jpg"],
   },
   {
     id: 2,
@@ -40,10 +37,7 @@ const competitions: Competition[] = [
     subtitle: "Main Developer",
     description: "Built an e-commerce mobile app under 5 hours with a 3-person team.",
     details: "We competed in Tagisan ng Talino: CodeFest, a local-level mobile app hackathon, where we were tasked to develop an Android application focused on managing construction inventory and handling the borrowing and returning of construction equipment. The system also required features such as tracking item availability, recording transactions, and generating PDF reports for documentation and monitoring purposes. As the main developer, I was able to design and implement a functional and user-friendly interface, including core features for inventory management and equipment borrowing/returning workflows. The application also emphasized accurate record keeping and efficient data management to support real-world construction site operations.",
-    certificates: [
-      "/certificates/code-fest-cert.jpg",
-      "/images/code-fest.jpg",
-    ],
+    certificates: ["/certificates/code-fest-cert.jpg", "/images/code-fest.jpg"],
   },
   {
     id: 3,
@@ -53,11 +47,8 @@ const competitions: Competition[] = [
     title: "hack-it! The New Era of Banking - Participant",
     subtitle: "Main Developer, Database Designer",
     description: "Built AI-assisted KYC insurance platform for faster application review and processing.",
-    details: "We competed with 12 teams in the 2-day hackathon event hack-It! The New Era of Banking, presenting LifeGard as our contribution—an AI-assisted life insurance system designed to improve underwriting efficiency and application processing speed. LifeGard uses machine learning trained on historical approved and rejected applications to adapt risk assessments based on each insurance company’s criteria, including factors such as age and medical conditions. As a decision-support tool, it streamlines the evaluation process while still requiring human underwriters for complex cases such as fraud detection and final approval. Although this was our first hackathon event and we did not win, the experience provided us with valuable learning opportunities and strengthened our skills in innovation, teamwork, and system development.",
-    certificates: [
-      "/certificates/hackathon-cert.jpg",
-      "/images/hackathon-1.jpg",
-    ],
+    details: "We competed with 12 teams in the 2-day hackathon event hack-It! The New Era of Banking, presenting LifeGard as our contribution—an AI-assisted life insurance system designed to improve underwriting efficiency and application processing speed. LifeGard uses machine learning trained on historical approved and rejected applications to adapt risk assessments based on each insurance company's criteria, including factors such as age and medical conditions. As a decision-support tool, it streamlines the evaluation process while still requiring human underwriters for complex cases such as fraud detection and final approval. Although this was our first hackathon event and we did not win, the experience provided us with valuable learning opportunities and strengthened our skills in innovation, teamwork, and system development.",
+    certificates: ["/certificates/hackathon-cert.jpg", "/images/hackathon-1.jpg"],
   },
 ];
 
@@ -71,165 +62,45 @@ function Modal({ selected, onClose }: { selected: Competition; onClose: () => vo
   }, []);
 
   return createPortal(
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(0,0,0,0.85)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        padding: 24,
-        backdropFilter: "blur(6px)",
-      }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: "var(--surface)",
-          border: "1px solid var(--border)",
-          borderRadius: 16,
-          padding: "28px 32px",
-          maxWidth: 600,
-          width: "100%",
-          maxHeight: "90vh",
-          overflowY: "auto",
-          position: "relative",
-        }}
-      >
-        {/* Close */}
-        <button
-          onClick={onClose}
-          style={{
-            position: "absolute", top: 16, right: 16,
-            width: 32, height: 32, borderRadius: "50%",
-            border: "1px solid var(--border)",
-            background: "var(--bg)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: "var(--text-primary)",
-          }}
-        >
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-box" onClick={e => e.stopPropagation()}>
+
+        <button className="modal-close" onClick={onClose}>
           <X size={15} />
         </button>
 
-        {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: 10,
-            background: "var(--tag-bg)",
-            border: "1px solid var(--border)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: "var(--text-primary)",
-          }}>
-            {selected.icon}
-          </div>
-          <span style={{
-            fontFamily: "var(--font-mono), monospace",
-            fontSize: 11, fontWeight: 600,
-            letterSpacing: "0.1em",
-            color: "var(--text-secondary)",
-            border: "1px solid var(--border)",
-            borderRadius: 999,
-            padding: "4px 12px",
-          }}>
-            {selected.placement} · {selected.year}
-          </span>
+          <div className="modal-icon">{selected.icon}</div>
+          <span className="modal-badge">{selected.placement} · {selected.year}</span>
         </div>
 
-        {/* Title */}
-        <h3 style={{
-          fontFamily: "var(--font-heading), serif",
-          fontSize: 26, fontWeight: 700,
-          letterSpacing: "-0.02em",
-          color: "var(--text-primary)",
-          marginBottom: 6,
-        }}>
-          {selected.title}
-        </h3>
-        <p style={{
-          fontFamily: "var(--font-mono), monospace",
-          fontSize: 11, letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          color: "var(--text-secondary)",
-          marginBottom: 20,
-        }}>
-          {selected.subtitle}
-        </p>
+        <h3 className="modal-title">{selected.title}</h3>
+        <p className="modal-subtitle">{selected.subtitle}</p>
 
-        {/* Photo slider */}
         <div style={{ marginBottom: 20 }}>
-          {/* Image */}
-          <div style={{
-            width: "100%", height: 260,
-            borderRadius: 12, overflow: "hidden",
-            border: "1px solid var(--border)",
-            position: "relative",
-            background: "var(--bg)",
-            marginBottom: 12,
-          }}>
+          <div className="modal-photo">
             <Image
               src={selected.certificates[photoIndex]}
               alt={`${selected.title} photo ${photoIndex + 1}`}
-              fill
-              style={{ objectFit: "contain" }}
+              fill style={{ objectFit: "contain" }}
             />
           </div>
 
-          {/* Nav controls */}
           {total > 1 && (
-            <div style={{
-              display: "flex", alignItems: "center",
-              justifyContent: "space-between",
-              marginTop: 12,
-            }}>
-              {/* Counter */}
-              <span style={{
-                fontFamily: "var(--font-mono), monospace",
-                fontSize: 11, color: "var(--text-muted)",
-                letterSpacing: "0.1em",
-              }}>
-                {photoIndex + 1} / {total}
-              </span>
-
-              {/* Buttons */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
+              <span className="modal-counter">{photoIndex + 1} / {total}</span>
               <div style={{ display: "flex", gap: 8 }}>
                 <button
+                  className="modal-nav-btn"
                   onClick={() => setPhotoIndex(i => Math.max(0, i - 1))}
                   disabled={photoIndex === 0}
-                  style={{
-                    width: 36, height: 36,
-                    borderRadius: "50%",
-                    border: "1px solid var(--border)",
-                    background: "var(--bg)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    cursor: photoIndex === 0 ? "not-allowed" : "pointer",
-                    color: photoIndex === 0 ? "var(--text-muted)" : "var(--text-primary)",
-                    opacity: photoIndex === 0 ? 0.4 : 1,
-                    transition: "border-color 0.18s ease",
-                  }}
-                  onMouseEnter={e => {
-                    if (photoIndex !== 0) e.currentTarget.style.borderColor = "var(--text-primary)";
-                  }}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
                 >
                   <ChevronLeft size={16} />
                 </button>
                 <button
+                  className="modal-nav-btn"
                   onClick={() => setPhotoIndex(i => Math.min(total - 1, i + 1))}
                   disabled={photoIndex === total - 1}
-                  style={{
-                    width: 36, height: 36,
-                    borderRadius: "50%",
-                    border: "1px solid var(--border)",
-                    background: "var(--bg)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    cursor: photoIndex === total - 1 ? "not-allowed" : "pointer",
-                    color: photoIndex === total - 1 ? "var(--text-muted)" : "var(--text-primary)",
-                    opacity: photoIndex === total - 1 ? 0.4 : 1,
-                    transition: "border-color 0.18s ease",
-                  }}
-                  onMouseEnter={e => {
-                    if (photoIndex !== total - 1) e.currentTarget.style.borderColor = "var(--text-primary)";
-                  }}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
                 >
                   <ChevronRight size={16} />
                 </button>
@@ -238,10 +109,7 @@ function Modal({ selected, onClose }: { selected: Competition; onClose: () => vo
           )}
         </div>
 
-        {/* Details */}
-        <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.75, textAlign: "justify"}}>
-          {selected.details}
-        </p>
+        <p className="modal-body">{selected.details}</p>
       </div>
     </div>,
     document.body
@@ -262,7 +130,6 @@ export default function Competitions() {
 
       <div className="card p-7">
         <div className="section-subtitle">06 — Recognition</div>
-
         <div className="flex items-center justify-between mb-5">
           <h2 className="section-title">Competitions</h2>
         </div>
@@ -274,39 +141,13 @@ export default function Competitions() {
               onClick={() => setSelected(comp)}
               className="group bg-[var(--bg)] border border-[var(--border)] rounded-[12px] p-5 cursor-pointer transition duration-200 ease-out hover:border-[var(--text-muted)] hover:-translate-y-1"
             >
-              {/* Top row */}
               <div className="flex items-center justify-between mb-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)]">
-                  {comp.icon}
-                </div>
-                <span className="text-[10px] font-semibold tracking-[0.1em] text-[var(--text-secondary)] border border-[var(--border)] rounded-full px-3 py-1">
-                  {comp.placement} · {comp.year}
-                </span>
+                <div className="comp-card-icon">{comp.icon}</div>
+                <span className="comp-card-badge">{comp.placement} · {comp.year}</span>
               </div>
-
-              <h3 style={{
-                fontFamily: "var(--font-heading), serif",
-                fontSize: 20, fontWeight: 700,
-                letterSpacing: "-0.01em",
-                color: "var(--text-primary)",
-                marginBottom: 6,
-              }}>
-                {comp.title}
-              </h3>
-
-              <p style={{
-                fontFamily: "var(--font-mono), monospace",
-                fontSize: 10, letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--text-secondary)",
-                marginBottom: 12,
-              }}>
-                {comp.subtitle}
-              </p>
-
-              <p style={{ color: "var(--text-secondary)", fontSize: 13, lineHeight: 1.65 }}>
-                {comp.description}
-              </p>
+              <h3 className="comp-card-title">{comp.title}</h3>
+              <p className="comp-card-role">{comp.subtitle}</p>
+              <p className="comp-card-desc">{comp.description}</p>
             </div>
           ))}
         </div>

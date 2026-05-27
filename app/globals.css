@@ -726,3 +726,526 @@ body {
   background: var(--border);
   margin-top: 2px;
 }
+
+/* Hero — social icon links */
+.social-icon-link {
+  color: #9b9590;
+  transition: color 0.15s;
+}
+.social-icon-link:hover {
+  color: #f0ede8;
+}
+
+/* Hero — Download CV button */
+.btn-download-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #f0ede8;
+  color: #1a1814;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Hero — ID card drag hint label */
+.id-card-hint {
+  margin-top: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Hero — ID card blink cursor on name */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.name-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.80em;
+  background: #f0ede8;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: 1px;
+  animation: blink-cursor 1s steps(2, start) infinite;
+}
+
+/* Hero — ID card top strip */
+.id-card-strip {
+  height: 8px;
+  background: linear-gradient(90deg, #1a1a1a, #333, #1a1a1a);
+  border-bottom: 1px solid #333;
+}
+
+/* Hero — ID card hole punch */
+.id-card-hole {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #000;
+  border: 1px solid #555;
+  z-index: 3;
+}
+
+/* Hero — ID card info strip */
+.id-card-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.id-card-name {
+  font-family: var(--font-heading), serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.id-card-course {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+/* Hero — barcode decoration */
+.id-card-barcode {
+  margin-top: 10px;
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 20px;
+  opacity: 0.3;
+}
+
+/* Competitions — modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(6px);
+}
+
+/* Competitions — modal box */
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Competitions — modal close button */
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+/* Competitions — modal icon box */
+.modal-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+/* Competitions — modal badge pill */
+.modal-badge {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+/* Competitions — modal title */
+.modal-title {
+  font-family: var(--font-heading), serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+/* Competitions — modal subtitle */
+.modal-subtitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* Competitions — modal photo frame */
+.modal-photo {
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  background: var(--bg);
+  margin-bottom: 12px;
+}
+
+/* Competitions — modal nav button */
+.modal-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: border-color 0.18s ease;
+}
+.modal-nav-btn:hover {
+  border-color: var(--text-primary);
+}
+.modal-nav-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  color: var(--text-muted);
+}
+
+/* Competitions — modal counter */
+.modal-counter {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* Competitions — modal body text */
+.modal-body {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  text-align: justify;
+}
+
+/* Competitions — card icon box */
+.comp-card-icon {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+/* Competitions — card badge pill */
+.comp-card-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-family: var(--font-mono), monospace;
+}
+
+/* Competitions — card title */
+.comp-card-title {
+  font-family: var(--font-heading), serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+/* Competitions — card role label */
+.comp-card-role {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* Competitions — card description */
+.comp-card-desc {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* Contact — available badge blink dot */
+@keyframes contact-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.contact-blink-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  display: inline-block;
+  animation: contact-blink 1.2s ease-in-out infinite;
+}
+
+/* Contact — available badge */
+.contact-available-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--text-primary);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg);
+}
+
+/* Contact — heading */
+.contact-heading {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+/* Contact — subtext */
+.contact-subtext {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* Contact — info row */
+.contact-info-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-info-row:last-child {
+  border-bottom: none;
+}
+
+/* Contact — info row label */
+.contact-info-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+/* Contact — info row value */
+.contact-info-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+/* Contact — form input / textarea shared */
+.contact-field {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: var(--font-body), sans-serif;
+  transition: border-color 0.15s ease;
+}
+.contact-field:focus {
+  border-color: var(--text-primary);
+}
+.contact-field.error {
+  border-color: rgb(239 68 68);
+}
+.contact-field[type="textarea"],
+textarea.contact-field {
+  resize: none;
+}
+
+/* Projects — preview shell */
+.project-preview {
+  width: 100%;
+  height: 190px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Projects — preview image overlay */
+.project-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.40);
+  pointer-events: none;
+}
+
+/* Projects — preview placeholder */
+.project-preview-placeholder {
+  background: var(--tag-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+/* Projects — preview placeholder label */
+.project-preview-placeholder-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+/* Projects — card tag row */
+.project-card-tags {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+/* Projects — card description */
+.project-card-desc {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.section-separator {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 0;
+}
+
+.section-separator-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.section-separator-glow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+
+  width: 180px;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.95),
+    transparent
+  );
+
+  filter: blur(0.8px);
+  transform: translateY(-50%);
+
+  animation: separatorLoop 4.5s ease-in-out infinite;
+}
+
+/* KEY: slide → hold → reset */
+@keyframes separatorLoop {
+  0% {
+    left: -200px;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  45% {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  70% {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1; /* HOLD in center */
+  }
+
+  100% {
+    left: 120%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+}
