@@ -7,6 +7,7 @@ const LoadingPage = LoadingPageComponent as ComponentType<{ onComplete?: () => v
 
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import ScrollDown from "@/components/ScrollDown";
 import TechStack from "@/components/TechStack";
 import SocialLinks from "@/components/SocialLinks";
 import Projects from "@/components/Projects";
@@ -96,6 +97,7 @@ export default function Home() {
         <Reveal className="mb-5">
           <Hero />
           <Marquee />
+          <ScrollDown />
         </Reveal>
 
         <Reveal className="mb-5" delay={0.05}>

@@ -9,7 +9,7 @@ interface Project {
   description: string;
   tags: string[];
   href: string;
-  image?: string; // path to your screenshot, e.g. "/images/enroll360.png"
+  image?: string; 
 }
 
 // ─── Preview Shell ────────────────────────────────────────────────────────────
@@ -41,7 +41,6 @@ function PreviewShell({
 }
 
 // ─── Project Preview ──────────────────────────────────────────────────────────
-// Shows the image if provided, otherwise a neutral placeholder.
 
 function ProjectPreview({ image, name }: { image?: string; name: string }) {
   if (image) {
@@ -53,7 +52,7 @@ function ProjectPreview({ image, name }: { image?: string; name: string }) {
           style={{ width: "100%", height: "100%", objectFit: "contain" }}
         />
         {/* Black overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.30)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.40)", pointerEvents: "none" }} />
       </PreviewShell>
     );
   }
@@ -80,8 +79,6 @@ function ProjectPreview({ image, name }: { image?: string; name: string }) {
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// Add your screenshot path to `image` for each project.
-// Images should live in your /public folder, e.g. /public/images/enroll360.png
 
 const projects: Project[] = [
   {

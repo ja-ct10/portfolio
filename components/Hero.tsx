@@ -2,29 +2,76 @@
 import { Download, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { motion, useSpring, useTransform } from "framer-motion";
 
 export default function Hero() {
   const [typingText, setTypingText] = useState("");
-  const photoRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = photoRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+  // Spring physics for the ID sway
+  const rotateSpring = useSpring(0, { stiffness: 120, damping: 10, mass: 1.2 });
+  const swayX = useSpring(0, { stiffness: 80, damping: 12, mass: 1 });
+
+  // Derive lace curve from rotation
+  const laceControl = useTransform(rotateSpring, [-20, 0, 20], [-18, 0, 18]);
+
+  const idRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const lastX = useRef(0);
+  const velocityRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+
+  // Idle sway animation
+  useEffect(() => {
+    let t = 0;
+    let idleActive = true;
+    const idle = () => {
+      if (!idleActive || isDragging.current) return;
+      t += 0.018;
+      const sway = Math.sin(t) * 3.5;
+      rotateSpring.set(sway);
+      swayX.set(Math.sin(t) * 2);
+      rafRef.current = requestAnimationFrame(idle);
+    };
+    const startIdle = setTimeout(() => { idle(); }, 800);
+    return () => {
+      idleActive = false;
+      clearTimeout(startIdle);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [rotateSpring, swayX]);
+
+  // Mouse drag on ID card
+  const onMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    lastX.current = e.clientX;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
   };
 
-  const handleMouseLeave = () => {
-    const el = photoRef.current;
-    if (!el) return;
-    el.style.transform = "perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)";
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const dx = e.clientX - lastX.current;
+    velocityRef.current = dx;
+    lastX.current = e.clientX;
+    rotateSpring.set(Math.max(-28, Math.min(28, rotateSpring.get() + dx * 0.6)));
+    swayX.set(swayX.get() + dx * 0.3);
   };
+
+  const onMouseUp = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    // Fling and return
+    rotateSpring.set(rotateSpring.get() + velocityRef.current * 1.5);
+    swayX.set(swayX.get() + velocityRef.current * 0.8);
+    setTimeout(() => {
+      rotateSpring.set(0);
+      swayX.set(0);
+    }, 120);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mouseup", onMouseUp);
+    return () => window.removeEventListener("mouseup", onMouseUp);
+  });
 
   useEffect(() => {
     const sequence = [
@@ -48,7 +95,6 @@ export default function Hero() {
     const tick = () => {
       if (!active) return;
       const item = sequence[step];
-
       if (mode === "typing") {
         if (index < item.full.length) {
           index += 1;
@@ -57,14 +103,12 @@ export default function Hero() {
           timeoutId = setTimeout(tick, 55);
           return;
         }
-
         timeoutId = setTimeout(() => {
           mode = "erasing";
           timeoutId = setTimeout(tick, 32);
         }, item.pause);
         return;
       }
-
       const keepLen = item.eraseTo.length;
       if (index > keepLen) {
         index -= 1;
@@ -73,7 +117,6 @@ export default function Hero() {
         timeoutId = setTimeout(tick, 32);
         return;
       }
-
       currentValue = item.full.slice(0, keepLen);
       setTypingText(currentValue);
       step = (step + 1) % sequence.length;
@@ -86,7 +129,6 @@ export default function Hero() {
     };
 
     tick();
-
     return () => {
       active = false;
       if (timeoutId) clearTimeout(timeoutId);
@@ -98,13 +140,11 @@ export default function Hero() {
       <section className="animate-fade-up delay-1 overflow-hidden relative min-h-[340px] flex flex-col gap-8 hero-grid p-6 sm:p-8 lg:p-[52px] md:flex-row md:items-center md:justify-between">
         {/* Left content */}
         <div className="flex-1 z-10 min-w-0">
-          {/* Location — Roboto Mono */}
           <div className="section-subtitle">
             <MapPin size={12} color="var(--text-primary)" />
             Taguig City, Philippines
           </div>
 
-          {/* Name */}
           <h1
             className="text-[clamp(3.5rem,9vw,5rem)] font-bold leading-[1.05] tracking-[-0.01em] text-[#f0ede8] mb-2"
             style={{ fontFamily: "var(--font-heading), serif" }}
@@ -174,7 +214,6 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-3 items-center">
-            
             <a href="/Tiron_JulieAnn_Resume.pdf"
               download="Tiron_JulieAnn_Resume.pdf"
               style={{
@@ -188,30 +227,207 @@ export default function Hero() {
               <Download size={14} />
               Download CV
             </a>
-            
-            <a href="mailto:tironjulieann10@gmail.com"
-              className="btn-primary"
-            >
+            <a href="mailto:tironjulieann10@gmail.com" className="btn-primary">
               <Mail size={14} />
               Send email
             </a>
           </div>
         </div>
 
-        {/* Right — photo with tilt effect */}
+        {/* Right — ID card with lanyard */}
         <div
-          ref={photoRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="relative flex-shrink-0 w-full max-w-[280px] h-[300px] mx-auto rounded-[14px] overflow-hidden border border-[var(--border)] transition-transform duration-150 ease-out cursor-pointer md:mx-0 lg:w-[240px] lg:h-[300px]"
-          style={{ position: "relative" }}
+          className="relative flex-shrink-0 flex flex-col items-center md:mx-0"
+          style={{ width: 240, userSelect: "none" }}
         >
-          <Image
-            src="/images/IMG_20260226_191311.jpg"
-            alt="Julie Ann Tiron"
-            fill
-            style={{ objectFit: "cover", objectPosition: "center top" }}
-          />
+          {/* ── Lanyard anchor point ── */}
+          <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}>
+
+            {/* SVG lace — curves with the sway */}
+            <motion.svg
+              width="120"
+              height="52"
+              viewBox="0 0 120 52"
+              fill="none"
+              style={{ display: "block", marginBottom: -2, overflow: "visible" }}
+            >
+              {/* Outer lace strand */}
+              <motion.path
+                style={{
+                  d: useTransform(laceControl, (c) =>
+                    `M60,0 C${60 + c * 0.6},18 ${40 + c},38 ${44 + c * 0.8},52`
+                  ),
+                }}
+                stroke="#3a3a3a"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              {/* Inner lace strand */}
+              <motion.path
+                style={{
+                  d: useTransform(laceControl, (c) =>
+                    `M60,0 C${60 + c * 0.6},18 ${80 - c},38 ${76 - c * 0.8},52`
+                  ),
+                }}
+                stroke="#3a3a3a"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              {/* Center spine */}
+              <motion.path
+                style={{
+                  d: useTransform(laceControl, (c) =>
+                    `M60,0 C${60 + c * 0.5},20 ${60 + c * 0.8},34 ${60 + c},52`
+                  ),
+                }}
+                stroke="#555"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeDasharray="3 4"
+              />
+              {/* Anchor dot */}
+              <circle cx="60" cy="2" r="3" fill="#444" />
+            </motion.svg>
+
+            {/* Clip clamp at bottom of lace */}
+            <motion.div
+              style={{
+                position: "absolute",
+                bottom: -4,
+                left: "50%",
+                x: "-50%",
+                rotate: rotateSpring,
+                width: 22,
+                height: 10,
+                borderRadius: 3,
+                background: "#2a2a2a",
+                border: "1px solid #444",
+                zIndex: 2,
+              }}
+            />
+          </div>
+
+          {/* ── ID Card ── */}
+          <motion.div
+            ref={idRef}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            style={{
+              rotate: rotateSpring,
+              x: swayX,
+              transformOrigin: "top center",
+              cursor: isDragging.current ? "grabbing" : "grab",
+              position: "relative",
+              width: 240,
+              borderRadius: 14,
+              overflow: "hidden",
+              border: "1px solid var(--border)",
+              boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
+              background: "var(--surface)",
+            }}
+            whileTap={{ cursor: "grabbing" }}
+          >
+            {/* Card top strip */}
+            <div style={{
+              height: 8,
+              background: "linear-gradient(90deg, #1a1a1a, #333, #1a1a1a)",
+              borderBottom: "1px solid #333",
+            }} />
+
+            {/* Hole punch */}
+            <div style={{
+              position: "absolute",
+              top: 4,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              background: "#000",
+              border: "1px solid #555",
+              zIndex: 3,
+            }} />
+
+            {/* Photo */}
+            <div style={{ position: "relative", width: "100%", height: 300 }}>
+              <Image
+                src="/images/IMG_20260226_191311.jpg"
+                alt="Julie Ann Tiron"
+                fill
+                draggable={false}
+                style={{ objectFit: "cover", objectPosition: "center top", pointerEvents: "none" }}
+              />
+              {/* Subtle gradient fade at bottom */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0, height: 80,
+                background: "linear-gradient(to top, var(--surface), transparent)",
+                pointerEvents: "none",
+              }} />
+            </div>
+
+            {/* Card info strip */}
+            <div style={{ padding: "10px 14px 14px", borderTop: "1px solid var(--border)" }}>
+              <div style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: 9,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--text-secondary)",
+                marginBottom: 4,
+              }}>
+                Student
+              </div>
+              <div style={{
+                fontFamily: "var(--font-heading), serif",
+                fontSize: 17,
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                letterSpacing: "-0.01em",
+              }}>
+                Julie Ann Tiron
+              </div>
+              <div style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: 9,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--text-secondary)",
+                marginTop: 3,
+              }}>
+                BS Information Technology
+              </div>
+
+              {/* Barcode decoration */}
+              <div style={{
+                marginTop: 10,
+                display: "flex",
+                gap: 2,
+                alignItems: "flex-end",
+                height: 20,
+                opacity: 0.3,
+              }}>
+                {[3,1,4,2,3,1,2,4,1,3,2,1,4,2,3,1,2,3,1,4,2,1,3].map((h, i) => (
+                  <div key={i} style={{
+                    width: i % 3 === 0 ? 2 : 1,
+                    height: `${h * 5}px`,
+                    background: "var(--text-primary)",
+                    borderRadius: 1,
+                  }} />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Hint label */}
+          <div style={{
+            marginTop: 10,
+            fontFamily: "var(--font-mono), monospace",
+            fontSize: 9,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "var(--text-secondary)",
+          }}>
+            drag to sway
+          </div>
         </div>
       </section>
     </>
