@@ -105,12 +105,29 @@ export default function Hero() {
           </div>
 
           {/* Name */}
-          <h1 className="text-[clamp(3.5rem,9vw,5rem)] font-bold leading-[1.05] tracking-[-0.01em] text-[#f0ede8] mb-2" style={{ fontFamily: "var(--font-heading), serif" }}>
+          <h1
+            className="text-[clamp(3.5rem,9vw,5rem)] font-bold leading-[1.05] tracking-[-0.01em] text-[#f0ede8] mb-2"
+            style={{ fontFamily: "var(--font-heading), serif" }}
+          >
             Julie Ann<br />
-            <span style={{ fontStyle: "italic", fontWeight: 700, color: "#959595" }}>Tiron.</span>
+            <span style={{ position: "relative", display: "inline-block" }}>
+              <span style={{ fontStyle: "italic", fontWeight: 700, color: "#959595" }}>Tiron</span>
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "3px",
+                  height: "0.80em",
+                  background: "#f0ede8",
+                  marginLeft: "6px",
+                  verticalAlign: "middle",
+                  borderRadius: "1px",
+                  animation: "blink-cursor 1s steps(2, start) infinite",
+                }}
+              />
+            </span>
           </h1>
 
-          <div className="section-subtitle hero-typewriter">
+          <div className="section-subtitle hero-typewriter" style={{ fontSize: 15 }}>
             <span className="typewriter-text">{typingText}</span>
             <span className="typewriter-cursor">|</span>
           </div>

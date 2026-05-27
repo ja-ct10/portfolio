@@ -9,7 +9,7 @@ export default function TechStack() {
     <div className="card p-7 h-full">
       <div>
           {/* Location — Roboto Mono */}
-          <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[11px] font-medium uppercase tracking-[0.1em] mb-2 font-[var(--font-mono)]">
+          <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[11px] uppercase tracking-[0.1em] mb-2 font-medium [font-family:var(--font-mono)]">
             02 - Capabilities
           </div>
       </div>

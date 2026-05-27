@@ -1,3 +1,10 @@
+"use client";
+
+import { useState, useEffect, useRef, ComponentType } from "react";
+import LoadingPageComponent from "@/components/LoadingPage";
+
+const LoadingPage = LoadingPageComponent as ComponentType<{ onComplete?: () => void }>;
+
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import TechStack from "@/components/TechStack";
@@ -10,50 +17,128 @@ import Contact from "@/components/Contact";
 import Stats from "@/components/Stats";
 import Competitions from "@/components/Competitions";
 import ScrollToTop from "@/components/ScrollToTop";
+import Education from "@/components/Education";
 
-export default function Home() {
+// ── Scroll-reveal hook ───────────────────────────────────────────────────────
+function useReveal(threshold = 0.12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold, rootMargin: "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
+// ── Reveal wrapper ───────────────────────────────────────────────────────────
+function Reveal({
+  children,
+  className,
+  delay = 0,
+  threshold,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  threshold?: number;
+}) {
+  const { ref, visible } = useReveal(threshold);
+
   return (
-    <main className="mx-auto max-w-[1200px] px-5 py-8 sm:px-6 lg:px-8">
-      {/* Hero + Marquee */}
-      <div className="mb-5">
-        <Hero />
-        <Marquee />
-      </div>
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0px)" : "translateY(40px)",
+        transition: visible
+          ? `opacity 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}s,
+             transform 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}s`
+          : "none",
+        willChange: "opacity, transform",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
-      {/* About */}
-      <div className="animate-fade-up delay-2 mb-5">
-        <About />
-      </div>
+// ── Page ─────────────────────────────────────────────────────────────────────
+export default function Home() {
+  const [loaded, setLoaded] = useState(false);
 
-      {/* Tech Stack + Social Links */}
-      <div className="animate-fade-up delay-3 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px] mb-5 items-start">
-        <TechStack />
-        <SocialLinks />
-      </div>
-      {/* Stats */}
-      <div className="mb-5">
-        <Stats />
-      </div>
-      {/* Projects */}
-      <div className="mb-5">
-        <Projects />
-      </div>
-      {/* Competitions */}
-      <div className="mb-5">
-        <Competitions />
-      </div>
-      {/* Gallery */}
-      <div className="mb-10">
-        <Gallery />
-      </div>
-      {/* Contact */}
-      <div className="mb-10">
-        <Contact />
-      </div>
+  return (
+    <>
+      <LoadingPage onComplete={() => setLoaded(true)} />
+        
+      <main
+        className="mx-auto max-w-[1200px] px-5 py-8 sm:px-6 lg:px-8"
+        style={{
+          opacity: loaded ? 1 : 0,
+          transition: loaded ? "opacity 0.4s ease" : "none",
+          pointerEvents: loaded ? "auto" : "none",
+        }}
+      >
+        {/* Hero + Marquee — no scroll trigger, visible immediately after loader */}
+        <Reveal className="mb-5">
+          <Hero />
+          <Marquee />
+        </Reveal>
 
-      {/* Footer */}
-      <Footer />
-      <ScrollToTop />
-    </main>
+        <Reveal className="mb-5" delay={0.05}>
+          <About />
+        </Reveal>
+
+        <Reveal
+          className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px] mb-5 items-start"
+        >
+          <TechStack />
+          <SocialLinks />
+        </Reveal>
+
+        <Reveal className="mb-5">
+          <Stats />
+        </Reveal>
+
+        <Reveal className="mb-5">
+          <Education />
+        </Reveal>
+
+        <Reveal className="mb-5">
+          <Projects />
+        </Reveal>
+
+        <Reveal className="mb-5">
+          <Competitions />
+        </Reveal>
+
+        <Reveal className="mb-10">
+          <Gallery />
+        </Reveal>
+
+        <Reveal className="mb-10">
+          <Contact />
+        </Reveal>
+
+        <Reveal threshold={0.01}>
+          <Footer />
+        </Reveal>
+
+        <ScrollToTop />
+      </main>
+    </>
   );
 }
