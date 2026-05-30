@@ -2207,6 +2207,13 @@ textarea.contact-field {
   overflow: hidden;
 }
 
+.comp-flip-card-inner:not(.flipped) .comp-flip-card-back {
+  pointer-events: none;
+}
+.comp-flip-card-inner.flipped .comp-flip-card-front {
+  pointer-events: none;
+}
+
 /* Card Front */
 .comp-flip-card-front {
   background: var(--surface);

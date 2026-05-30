@@ -119,7 +119,7 @@ function CompetitionCard({ comp }: { comp: Competition }) {
           <h3 className="comp-card-title">{comp.title}</h3>
           <p className="comp-card-role">{comp.subtitle}</p>
 
-          <div className="comp-card-desc">
+          <div className="comp-card-desc" onClick={(e) => e.stopPropagation()}>
             <p style={{ fontWeight: 500, color: "var(--text-primary)", marginBottom: 8 }}>
               {comp.description}
             </p>
