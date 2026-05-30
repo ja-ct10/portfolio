@@ -218,6 +218,15 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         </ul>
       </nav>
       <span className="effect filter" ref={filterRef} />
+      
+      <svg style={{ display: 'block', height: 0, width: 0, position: 'absolute', pointerEvents: 'none' }} aria-hidden="true">
+        <defs>
+          <filter id="gooey-nav-filter">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" />
+          </filter>
+        </defs>
+      </svg>
     </div>
   );
 };
