@@ -3,6 +3,11 @@ import { Download, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const LightRays = dynamic(() => import("./LightRays"), { ssr: false });
+
+
 
 export default function Hero() {
   const [typingText, setTypingText] = useState("");
@@ -129,16 +134,30 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="animate-fade-up delay-1 overflow-hidden relative min-h-[340px] flex flex-col gap-8 hero-grid p-6 sm:p-8 lg:p-[52px] md:flex-row md:items-center md:justify-between">
+    <section className="animate-fade-up delay-1 overflow-hidden relative flex flex-1 min-h-0 flex-col items-center gap-6 hero-grid p-4 sm:gap-8 sm:p-6 md:flex-row md:items-center md:justify-between md:gap-8 lg:p-[52px]">
+      <LightRays
+        raysOrigin="top-center"
+        raysColor="#ffffff"
+        raysSpeed={1.0}
+        lightSpread={0.6}
+        rayLength={1.5}
+        pulsating={true}
+        fadeDistance={1.2}
+        saturation={0.7}
+        followMouse={true}
+        mouseInfluence={0.08}
+        noiseAmount={0.03}
+        distortion={0.04}
+      />
       {/* Left content */}
-      <div className="flex-1 z-10 min-w-0">
+      <div className="flex-1 z-10 min-w-0 w-full md:w-auto">
         <div className="section-subtitle">
           <MapPin size={12} color="var(--text-primary)" />
           Taguig City, Philippines
         </div>
 
         <h1
-          className="text-[clamp(3.5rem,9vw,5rem)] font-bold leading-[1.05] tracking-[-0.01em] text-[#f0ede8] mb-2"
+          className="text-[clamp(2.5rem,11vw,5rem)] font-bold leading-[1.05] tracking-[-0.01em] text-[#f0ede8] mb-2"
           style={{ fontFamily: "var(--font-heading), serif" }}
         >
           Julie Ann<br />
@@ -148,7 +167,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        <div className="section-subtitle hero-typewriter" style={{ fontSize: 15 }}>
+        <div className="section-subtitle hero-typewriter max-w-full" style={{ fontSize: 15 }}>
           <span className="typewriter-text">{typingText}</span>
           <span className="typewriter-cursor">|</span>
         </div>
@@ -192,8 +211,8 @@ export default function Hero() {
 
       {/* Right — ID card with lanyard */}
       <div
-        className="relative flex-shrink-0 flex flex-col items-center md:mx-0"
-        style={{ width: 240, userSelect: "none" }}
+        className="relative flex w-full max-w-[240px] flex-shrink-0 flex-col items-center self-center md:self-auto"
+        style={{ userSelect: "none" }}
       >
         <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}>
           <motion.svg
@@ -253,7 +272,7 @@ export default function Hero() {
             rotate: rotateSpring, x: swayX,
             transformOrigin: "top center",
             cursor: isDragging.current ? "grabbing" : "grab",
-            position: "relative", width: 240, borderRadius: 14, overflow: "hidden",
+            position: "relative", width: "100%", maxWidth: 240, borderRadius: 14, overflow: "hidden",
             border: "1px solid var(--border)", boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
             background: "var(--surface)", touchAction: "none",
           }}
@@ -266,6 +285,7 @@ export default function Hero() {
             <Image
               src="/images/IMG_20260226_191311.jpg"
               alt="Julie Ann Tiron" fill draggable={false}
+              sizes="(max-width: 768px) 100vw, 400px"
               style={{ objectFit: "cover", objectPosition: "center top", pointerEvents: "none" }}
             />
             <div style={{

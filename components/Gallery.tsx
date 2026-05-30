@@ -30,55 +30,56 @@ export default function Gallery() {
   };
 
   return (
-    <section className="animate-fade-up delay-5">
-      <div className="section-subtitle">
-        07 — Moments
-      </div>
+    <section id="gallery" className="animate-fade-up delay-5">
+      <div className="section-subtitle">07 — Moments</div>
 
-      {/* Title row with buttons aligned right */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-5">
         <h2 className="section-title">Gallery</h2>
 
-        {/* Nav buttons */}
         <div className="flex gap-2">
           <button
             onClick={() => scroll("left")}
             style={{
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               borderRadius: "50%",
               border: "1px solid var(--border)",
               background: "var(--surface)",
-              display: "flex", alignItems: "center", justifyContent: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               cursor: "pointer",
               color: "var(--text-primary)",
               transition: "border-color 0.18s ease",
             }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--text-primary)")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--text-primary)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={() => scroll("right")}
             style={{
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               borderRadius: "50%",
               border: "1px solid var(--border)",
               background: "var(--surface)",
-              display: "flex", alignItems: "center", justifyContent: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               cursor: "pointer",
               color: "var(--text-primary)",
               transition: "border-color 0.18s ease",
             }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--text-primary)")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--text-primary)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
           >
             <ChevronRight size={16} />
           </button>
         </div>
       </div>
 
-      {/* Scroll Container — no relative positioning needed for buttons anymore */}
       <div ref={containerRef} className="gallery-scroll">
         {images.map((src, i) => (
           <div className="gallery-item" key={i}>
@@ -91,7 +92,6 @@ export default function Gallery() {
           </div>
         ))}
       </div>
-
     </section>
   );
 }

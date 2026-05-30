@@ -1,18 +1,20 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 interface EducationEntry {
   period: string;
-  status: string;
+  status: "ONGOING" | "GRADUATED";
   course: string;
   school: string;
-  description: string;
+  description?: string;
 }
 
 const entries: EducationEntry[] = [
   {
-    period: "2023 — PRESENT",
+    period: "2023 — Present",
     status: "ONGOING",
-    course: "BS INFORMATION TECHNOLOGY",
+    course: "BS Information Technology",
     school: "STI College Global City",
     description:
       "Third-year student specializing in backend development, database design, and cybersecurity. Active in coding competitions and hackathons.",
@@ -20,37 +22,35 @@ const entries: EducationEntry[] = [
   {
     period: "2021 — 2023",
     status: "GRADUATED",
-    course: "HUMANITIES AND SOCIAL SCIENCES (HUMSS) STRAND",
+    course: "Humanities and Social Sciences (HUMSS) Strand",
     school: "University of Makati",
-    description: "",
   },
   {
     period: "2017 — 2021",
     status: "GRADUATED",
-    course: "JUNIOR HIGH SCHOOL",
+    course: "Junior High School",
     school: "Tibagan High School",
-    description: "",
   },
   {
     period: "2011 — 2017",
     status: "GRADUATED",
-    course: "ELEMENTARY EDUCATION",
+    course: "Elementary Education",
     school: "East Rembo Elementary School",
-    description: "",
   },
 ];
 
 function GraduationCapIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="15"
+      height="15"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--text-primary)"
+      stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
       <path d="M6 12v5c3.33 2 8.67 2 12 0v-5" />
@@ -58,60 +58,83 @@ function GraduationCapIcon() {
   );
 }
 
-function EducationCard({ entry }: { entry: EducationEntry }) {
+function useReveal(ref: React.RefObject<HTMLElement | null>, delay = 0) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => el.classList.add("visible"), delay);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref, delay]);
+}
+
+function EducationRow({ entry, index }: { entry: EducationEntry; index: number }) {
+  const isFlipped = index % 2 === 1;
+  const isFirst = index === 0;
+  const base = index * 120;
+
+  const metaRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useReveal(metaRef, base);
+  useReveal(nodeRef, base + 80);
+  useReveal(cardRef, base + 140);
+
   return (
-    <div className="project-card" style={{ gap: 0, padding: "20px" }}>
-      <div className="edu-card-inner">
-        {/* Icon badge */}
-        <div className="edu-icon">
+    <article className={`edu-row${isFlipped ? " edu-row--flip" : ""}`}>
+      <div className="edu-node">
+        <div
+          ref={nodeRef}
+          className={`edu-node-circle edu-reveal from-down${isFirst ? " glow" : ""}`}
+        >
           <GraduationCapIcon />
         </div>
-
-        {/* Content */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1, minWidth: 0 }}>
-          {/* Period + status row — wraps on mobile */}
-          <div className="edu-meta">
-            <span className="edu-period">{entry.period}</span>
-            <span style={{ color: "var(--text-secondary)", fontSize: 11 }}>·</span>
-            <span className="edu-status">{entry.status}</span>
-          </div>
-
-          {/* Course — allows wrapping on small screens */}
-          <p
-            className="section-title"
-            style={{ fontSize: "clamp(15px, 2.5vw, 20px)", wordBreak: "break-word" }}
-          >
-            {entry.course}
-          </p>
-
-          {/* School */}
-          <span className="edu-school">{entry.school}</span>
-
-          {/* Description */}
-          {entry.description ? (
-            <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7, marginTop: 4 }}>
-              {entry.description}
-            </p>
-          ) : null}
-        </div>
       </div>
-    </div>
+
+      <div ref={metaRef} className="edu-tl-meta edu-reveal from-down">
+        <span className="edu-tl-year">{entry.period}</span>
+        <span className={`edu-tl-status ${entry.status.toLowerCase()}`}>
+          {entry.status}
+        </span>
+      </div>
+
+      <div ref={cardRef} className="edu-tl-card edu-reveal from-down">
+        <p className="edu-tl-course">{entry.course}</p>
+        <p className="edu-tl-school">{entry.school}</p>
+        {entry.description && (
+          <>
+            <div className="edu-tl-divider" />
+            <p className="edu-tl-desc">{entry.description}</p>
+          </>
+        )}
+      </div>
+    </article>
   );
 }
 
 export default function Education() {
   return (
-    <section>
-        <div className="card p-7">
-          <div className="section-subtitle">04 — Academic Background</div>
-          <h2 className="section-title mb-6">Education</h2>
+    <section id="education" className="education-section">
+        <div className="section-subtitle">04 — Academic Background</div>
+        <h2 className="section-title mb-6">Education</h2>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {entries.map((entry) => (
-              <EducationCard key={entry.school} entry={entry} />
-            ))}
-          </div>
+        <div className="edu-timeline">
+          <div className="edu-timeline-spine" aria-hidden="true" />
+          {entries.map((entry, i) => (
+            <EducationRow key={entry.school} entry={entry} index={i} />
+          ))}
         </div>
-      </section>
+    </section>
   );
 }

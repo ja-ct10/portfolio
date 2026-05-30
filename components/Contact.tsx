@@ -68,8 +68,8 @@ export default function Contact() {
 
   return (
     <>
-      <section className="animate-fade-up delay-5">
-        <div className="card p-7">
+      <section id="contact" className="animate-fade-up delay-5">
+        <div className="card p-5 sm:p-6 lg:p-7">
 
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
             <div className="section-subtitle" style={{ marginBottom: 0 }}>08 — Get in Touch</div>

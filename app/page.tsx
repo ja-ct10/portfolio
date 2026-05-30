@@ -9,7 +9,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import ScrollDown from "@/components/ScrollDown";
 import TechStack from "@/components/TechStack";
-import SocialLinks from "@/components/SocialLinks";
+//import SocialLinks from "@/components/SocialLinks";
 import Projects from "@/components/Projects";
 import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
@@ -18,6 +18,7 @@ import Contact from "@/components/Contact";
 import Stats from "@/components/Stats";
 import Competitions from "@/components/Competitions";
 import ScrollToTop from "@/components/ScrollToTop";
+import Navbar from "@/components/Navbar";
 import Education from "@/components/Education";
 
 // ── Scroll-reveal hook ───────────────────────────────────────────────────────
@@ -95,71 +96,71 @@ export default function Home() {
     <>
       <LoadingPage onComplete={() => setLoaded(true)} />
         
+      <Navbar visible={loaded} />
+        
       <main
-        className="mx-auto max-w-[1200px] px-5 py-8 sm:px-6 lg:px-8"
+        className="w-full min-h-[100dvh]"
         style={{
           opacity: loaded ? 1 : 0,
           transition: loaded ? "opacity 0.4s ease" : "none",
           pointerEvents: loaded ? "auto" : "none",
         }}
       >
-        {/* Hero + Marquee — no scroll trigger, visible immediately after loader */}
-        <Reveal className="mb-5">
+        {/* Hero + Marquee — fills first screen */}
+        <Reveal className="hero-below-nav mb-5 flex min-h-[100dvh] flex-col">
           <Hero />
           <Marquee />
           <ScrollDown />
         </Reveal>
 
+        <div className="section-gutter">
         <Reveal className="mb-5" delay={0.05}>
           <About />
         </Reveal>
 
-        <SectionSeparator />
-
-        <Reveal
-          className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px] pt-16 mb-5 items-start"
-        >
-          <TechStack />
-          <SocialLinks />
-        </Reveal>
-
-        <Reveal className="pt-8 mb-5">
+        <Reveal className="pt-6 sm:pt-8 mb-5">
           <Stats />
         </Reveal>
+        <SectionSeparator />
+
+        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
+          <TechStack />
+        </Reveal>
 
         <SectionSeparator />
 
-        <Reveal className="pt-16 mb-5">
+        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
           <Education />
         </Reveal>
 
         <SectionSeparator />
 
-        <Reveal className="pt-16 mb-5">
+        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
           <Projects />
         </Reveal>
 
         <SectionSeparator />
 
-        <Reveal className="pt-16 mb-5">
+        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
           <Competitions />
         </Reveal>
 
         <SectionSeparator />
 
-        <Reveal className="pt-16 mb-10">
+        <Reveal className="pt-6 sm:pt-10 mb-8 sm:mb-10">
           <Gallery />
         </Reveal>
 
         <SectionSeparator />
 
-        <Reveal className="pt-16 mb-10">
+        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-8 sm:mb-10">
           <Contact />
         </Reveal>
 
         <Reveal threshold={0.01}>
           <Footer />
         </Reveal>
+        </div>
 
         <ScrollToTop />
       </main>

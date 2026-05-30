@@ -19,7 +19,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Julie Ann Tiron - Portfolio",
+  title: "Julie Ann Tiron | Aspiring Backend Developer · Cybersecurity Professional",
   description: "IT Student | Aspiring Cybersecurity Professional & Backend Developer",
   icons: {
     icon: "/favicon.ico",
