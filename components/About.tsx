@@ -25,7 +25,7 @@ export default function About() {
           >
             <div className="about-photo">
               <Image
-                src="/images/DSC_0169.jpg"
+                src="/images/DSC_0169.JPG"
                 alt="Julie Ann Tiron"
                 fill
                 priority
@@ -47,7 +47,7 @@ export default function About() {
                 }}
               >
                 <Image
-                  src="/images/DSC_0165.jpg"
+                  src="/images/DSC_0165.JPG"
                   alt="Julie Ann Tiron with glasses"
                   fill
                   sizes="(max-width: 1000px) 100vw, 300px"
