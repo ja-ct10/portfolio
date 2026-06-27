@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import GooeyNav from "./GooeyNav";
@@ -10,8 +10,7 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Tech Stack", href: "#tech-stack" },
   { label: "Education", href: "#education" },
-  { label: "Projects", href: "#projects" },
-  { label: "Competitions", href: "#competitions" },
+  { label: "Portfolio", href: "#portfolio" },
   { label: "Gallery", href: "#gallery" },
 ];
 
@@ -24,11 +23,42 @@ export default function Navbar({ visible = true }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
 
+  // Ref to track whether scroll detection is temporarily disabled (during programmatic scroll)
+  const isScrollingToRef = useRef(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 48);
 
-      const scrollPosition = window.scrollY + 160; // Offset for navbar active section detection
+      // Skip scroll-based active detection while a programmatic scroll is in progress
+      if (isScrollingToRef.current) return;
+
+      // Use 40% of viewport height as the detection point
+      const scrollPosition = window.scrollY + window.innerHeight * 0.35;
+
+      // If we're in the contact section, don't highlight any nav link
+      const contactEl = document.querySelector("#contact");
+      if (contactEl) {
+        const contactTop = contactEl.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition >= contactTop) {
+          setActiveSection(-1);
+          return;
+        }
+      }
+
+      // Check if we're at the very bottom of the page — highlight last nav item
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
+      if (atBottom) {
+        // Find the last visible section in NAV_LINKS
+        for (let i = NAV_LINKS.length - 1; i >= 0; i--) {
+          const el = document.querySelector(NAV_LINKS[i].href);
+          if (el) {
+            setActiveSection(i);
+            return;
+          }
+        }
+      }
 
       for (let i = NAV_LINKS.length - 1; i >= 0; i--) {
         const link = NAV_LINKS[i];
@@ -66,6 +96,22 @@ export default function Navbar({ visible = true }: NavbarProps) {
 
   const scrollTo = (href: string) => {
     setMenuOpen(false);
+
+    // Immediately set active section to the clicked item
+    const clickedIndex = NAV_LINKS.findIndex((link) => link.href === href);
+    if (clickedIndex !== -1) {
+      setActiveSection(clickedIndex);
+    }
+
+    // Disable scroll-based detection while smooth scrolling is in progress
+    isScrollingToRef.current = true;
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+    scrollTimeoutRef.current = setTimeout(() => {
+      isScrollingToRef.current = false;
+    }, 1000);
+
     if (href === "#top") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;

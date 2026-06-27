@@ -50,8 +50,9 @@
 /* Base horizontal layout */
 .gooey-nav-container.horizontal nav ul {
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 1.5em;
+  gap: 0.5em;
   list-style: none;
   padding: 0 0.5em;
   margin: 0;

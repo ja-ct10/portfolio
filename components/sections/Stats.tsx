@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 const stats = [
   { value: 20, suffix: "+", label: "Technologies" },
-  { value: 5,  suffix: "+", label: "Competitions" },
-  { value: 3,  suffix: "+", label: "Certifications" },
+  { value: 5, suffix: "+", label: "Competitions" },
+  { value: 3, suffix: "+", label: "Certifications" },
   { value: null, suffix: "∞", label: "Curiosity" },
 ];
 
@@ -15,6 +15,7 @@ function easeOutExpo(t: number) {
 
 function useCountUp(target: number | null, duration = 1400, started: boolean) {
   const [display, setDisplay] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (!started || target === null) return;
@@ -24,12 +25,16 @@ function useCountUp(target: number | null, duration = 1400, started: boolean) {
       const progress = Math.min(elapsed / duration, 1);
       const eased = easeOutExpo(progress);
       setDisplay(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setDone(true);
+      }
     };
     requestAnimationFrame(step);
   }, [started, target, duration]);
 
-  return target === null ? null : display;
+  return { count: target === null ? null : display, done };
 }
 
 function StatCell({
@@ -39,6 +44,7 @@ function StatCell({
   index,
   started,
   isLast,
+  total,
 }: {
   value: number | null;
   suffix: string;
@@ -46,6 +52,7 @@ function StatCell({
   index: number;
   started: boolean;
   isLast: boolean;
+  total: number;
 }) {
   const delayedStart = useRef(false);
   const [go, setGo] = useState(false);
@@ -58,36 +65,20 @@ function StatCell({
     }
   }, [started, index]);
 
-  const count = useCountUp(value, 1400, go);
+  const { count, done } = useCountUp(value, 1400, go);
 
   return (
     <div
-      className={`px-6 py-7 ${!isLast ? "border-b border-[var(--border)] sm:border-b-0 sm:border-r" : ""}`}
+      className={`stats-cell ${!isLast ? "stats-cell--bordered" : ""}`}
     >
-      <p
-        style={{
-          fontFamily: "var(--font-heading), serif",
-          fontSize: "clamp(28px, 4vw, 40px)",
-          fontWeight: 700,
-          color: "var(--text-primary)",
-          lineHeight: 1,
-          marginBottom: 10,
-        }}
-      >
-        {value === null ? "∞" : `${count}${suffix}`}
-      </p>
-      <p
-        style={{
-          fontFamily: "var(--font-mono), monospace",
-          fontSize: 11,
-          fontWeight: 500,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          color: "var(--text-secondary)",
-        }}
-      >
-        {label}
-      </p>
+      <div className="stats-cell-inner">
+        <p className="stats-cell-value">
+          <span className={`stats-value-text ${done || value === null ? "stats-value-done" : ""}`}>
+            {value === null ? "∞" : `${count}${suffix}`}
+          </span>
+        </p>
+        <p className="stats-cell-label">{label}</p>
+      </div>
     </div>
   );
 }
@@ -100,7 +91,12 @@ export default function Stats() {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setStarted(true); obs.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          obs.disconnect();
+        }
+      },
       { threshold: 0.3 }
     );
     obs.observe(el);
@@ -110,7 +106,7 @@ export default function Stats() {
   return (
     <div
       ref={ref}
-      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 border border-[var(--border)] mb-5"
+      className="stats-grid-enhanced"
     >
       {stats.map((stat, i) => (
         <StatCell
@@ -121,6 +117,7 @@ export default function Stats() {
           index={i}
           started={started}
           isLast={i === stats.length - 1}
+          total={stats.length}
         />
       ))}
     </div>

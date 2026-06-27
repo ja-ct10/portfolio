@@ -1479,7 +1479,7 @@ body {
 /* Contact — heading */
 .contact-heading {
   font-family: var(--font-heading), serif;
-  font-size: clamp(36px, 5vw, 52px);
+  font-size: clamp(28px, 5vw, 52px);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -1593,6 +1593,25 @@ textarea.contact-field {
   font-weight: 500;
   color: var(--text-secondary);
   letter-spacing: 0.08em;
+}
+
+/* Portfolio — category badge */
+.portfolio-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
 }
 
 /* Projects — card description */
@@ -2117,6 +2136,22 @@ textarea.contact-field {
   transform: scale(1.02);
 }
 
+@media (max-width: 640px) {
+  .tab-menu,
+  .project-tabs-container {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .tab-menu-btn,
+  .project-tab-btn {
+    font-size: 9px;
+    padding: 6px 12px;
+    letter-spacing: 0.08em;
+  }
+}
+
 @keyframes projectsGridIn {
   from {
     opacity: 0;
@@ -2440,13 +2475,19 @@ textarea.contact-field {
   box-shadow: 0 16px 40px -14px rgba(0, 0, 0, 0.85);
 }
 
+@media (min-width: 641px) and (max-width: 1279px) {
+  .comp-flip-card-container {
+    height: clamp(420px, 50vw, 500px);
+  }
+}
+
 
 /* =========================================================
    ABOUT SECTION
    ========================================================= */
 
 .about-section {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .about-wrapper {
@@ -2555,24 +2596,57 @@ textarea.contact-field {
   align-self: flex-start;
   width: fit-content;
   max-width: 100%;
-  gap: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  gap: 0;
+  border: 1px solid rgba(240, 237, 232, 0.15);
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1816 100%);
   border-radius: 999px;
-  padding: 10px 18px;
+  padding: 10px 20px;
   margin-bottom: 28px;
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(240, 237, 232, 0.04),
+              0 0 8px rgba(240, 237, 232, 0.02);
 }
 
-.about-badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: about-dot-blink 1.4s ease-in-out infinite;
+.about-badge-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(240, 237, 232, 0.06) 40%,
+    rgba(240, 237, 232, 0.12) 50%,
+    rgba(240, 237, 232, 0.06) 60%,
+    transparent 100%
+  );
+  animation: about-badge-shine 3s ease-in-out 0.5s forwards;
+  pointer-events: none;
+}
+
+.about-badge-text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-badge-greeting {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.about-badge-name {
+  color: var(--accent);
+  font-weight: 700;
+  font-style: italic;
 }
 
 .about-main-text {
@@ -2613,12 +2687,54 @@ textarea.contact-field {
   background: var(--surface);
   border-radius: 14px;
   padding: 16px 20px;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  --card-mouse-x: 50%;
+  --card-mouse-y: 50%;
+}
+
+.about-info-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    200px circle at var(--card-mouse-x) var(--card-mouse-y),
+    rgba(240, 237, 232, 0.06) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.about-info-card:hover::before {
+  opacity: 1;
+}
+
+.about-info-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover), transparent);
+  border-radius: 2px 2px 0 0;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1;
+}
+
+.about-info-card:hover .about-info-card-accent {
+  width: 100%;
 }
 
 .about-info-card:hover {
   border-color: var(--accent-hover);
   background: var(--tag-bg);
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
+              0 0 16px rgba(240, 237, 232, 0.03);
 }
 
 .about-info-card h4 {
@@ -2628,6 +2744,13 @@ textarea.contact-field {
   margin-bottom: 4px;
   color: var(--text-primary);
   word-break: break-word;
+  position: relative;
+  z-index: 1;
+  transition: font-size 0.3s ease;
+}
+
+.about-info-card:hover h4 {
+  font-size: clamp(20px, 1.8vw, 23px);
 }
 
 .about-info-card p {
@@ -2636,6 +2759,8 @@ textarea.contact-field {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--text-secondary);
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================================================
@@ -2793,6 +2918,7 @@ section[id] {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
   gap: 20px;
   width: 100%;
   padding: 14px 22px;
@@ -2859,6 +2985,7 @@ section[id] {
   gap: 4px;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 .site-nav-link {
@@ -2943,6 +3070,9 @@ section[id] {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -2961,7 +3091,7 @@ section[id] {
   flex-direction: column;
   gap: 4px;
   padding: 12px 8px;
-  border: none;
+  border: 1px solid var(--border);
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(16px);
@@ -3036,5 +3166,876 @@ section[id] {
 
   .site-nav-logo-img {
     height: 20px;
+  }
+}
+
+
+/* =========================================================
+   ENHANCED ANIMATIONS, TRANSITIONS & RESPONSIVE POLISH
+   ========================================================= */
+
+/* ── 1. Smooth scroll enhancement ────────────────────────── */
+html {
+  scroll-padding-top: calc(var(--site-nav-offset) + 24px);
+}
+
+/* ── 2. Better button transitions ────────────────────────── */
+@keyframes btn-shimmer {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+
+.btn-download-cv {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-download-cv::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+
+.btn-download-cv:hover::after {
+  animation: btn-shimmer 0.75s ease forwards;
+}
+
+.btn-download-cv:hover {
+  box-shadow: 0 4px 16px rgba(240, 237, 232, 0.2);
+}
+
+/* Download CV pulse/glow animation */
+.btn-download-cv--pulse {
+  animation: cv-pulse-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes cv-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 237, 232, 0); }
+  50% { box-shadow: 0 0 16px 4px rgba(240, 237, 232, 0.18); }
+}
+
+.btn-download-cv--pulse:hover {
+  animation: none;
+}
+
+.btn-primary:active,
+.btn-download-cv:active {
+  transform: scale(0.96);
+}
+
+/* ── 3. Gallery image hover enhancements ─────────────────── */
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+}
+
+.gallery-scroll {
+  scroll-snap-type: x mandatory;
+}
+
+.gallery-item {
+  scroll-snap-align: start;
+}
+
+/* ── 4. Better focus states (accessibility) ──────────────── */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ── 5. Smooth page transitions (utility classes) ────────── */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 6. Mobile responsiveness fixes ──────────────────────── */
+@media (max-width: 640px) {
+  .contact-heading {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+}
+
+@media (max-width: 320px) {
+  .comp-flip-card-container {
+    max-width: 100%;
+    height: clamp(380px, 110vw, 440px);
+    perspective: 900px;
+  }
+
+  .comp-flip-card-back {
+    padding: 12px;
+  }
+
+  .comp-card-title {
+    font-size: 14px;
+  }
+
+  .comp-card-desc {
+    font-size: 11px;
+  }
+
+  .section-gutter {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .about-badge {
+    padding: 6px 10px;
+    font-size: 9px;
+  }
+
+  .about-info-card {
+    padding: 10px 12px;
+  }
+
+  .about-info-card h4 {
+    font-size: 16px;
+  }
+
+  .contact-heading {
+    font-size: 20px;
+  }
+
+  .btn-primary,
+  .btn-download-cv {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .hero-grid {
+    padding: 10px !important;
+  }
+
+  .site-nav-inner {
+    padding: 10px 12px;
+  }
+}
+
+/* ── 7. Card hover improvements ──────────────────────────── */
+.card:hover {
+  box-shadow:
+    var(--shadow-md),
+    0 0 20px rgba(255, 255, 255, 0.03);
+}
+
+.about-info-card {
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.about-info-card:hover {
+  transform: scale(1.03) translateY(-4px);
+}
+
+/* ── 8. Selection color ──────────────────────────────────── */
+::selection {
+  background: var(--accent);
+  color: #1a1814;
+}
+
+::-moz-selection {
+  background: var(--accent);
+  color: #1a1814;
+}
+
+/* ── 9. Reduced motion (accessibility) ───────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .fade-in-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .edu-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .gallery-item:hover {
+    transform: none;
+  }
+
+  .tech-card:hover,
+  .tech-card-compact:hover {
+    transform: none;
+  }
+
+  .project-card:hover {
+    transform: none;
+  }
+
+  .btn-download-cv::after {
+    display: none;
+  }
+
+  .scroll-down-drop {
+    animation: none;
+  }
+
+  .scroll-to-top::before,
+  .scroll-to-top::after {
+    animation: none;
+  }
+
+  .section-separator-glow {
+    animation: none;
+  }
+}
+
+
+/* =========================================================
+   ABOUT — Enhanced UI/UX Animations
+   ========================================================= */
+
+/* Gradient border animation on photo frame hover */
+.about-photo-wrap--animated {
+  position: relative;
+  border-radius: 16px;
+}
+
+.about-photo-wrap--animated::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(240, 237, 232, 0.4),
+    transparent,
+    rgba(240, 237, 232, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.about-photo-wrap--animated:hover::before {
+  opacity: 1;
+}
+
+/* Breathing / pulse animation on the AVAILABLE pill */
+.about-status-pill--breathing {
+  animation: about-pill-breathe 2.5s ease-in-out infinite;
+}
+
+@keyframes about-pill-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(240, 237, 232, 0);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 12px 2px rgba(240, 237, 232, 0.15);
+  }
+}
+
+/* Text highlight underline animation on scroll reveal */
+.about-highlight-span {
+  color: var(--text-primary);
+  font-weight: 700;
+  position: relative;
+  display: inline;
+}
+
+.about-highlight-span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--accent), rgba(240, 237, 232, 0.3));
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-text-revealed .about-highlight-span::after {
+  width: 100%;
+}
+
+/* Stagger the underline reveals */
+.about-text-revealed .about-highlight-span:nth-of-type(1)::after {
+  transition-delay: 0.1s;
+}
+.about-text-revealed .about-highlight-span:nth-of-type(2)::after {
+  transition-delay: 0.3s;
+}
+.about-text-revealed .about-highlight-span:nth-of-type(3)::after {
+  transition-delay: 0.5s;
+}
+.about-text-revealed .about-highlight-span:nth-of-type(4)::after {
+  transition-delay: 0.7s;
+}
+
+/* =========================================================
+   STATS — Enhanced UI/UX
+   ========================================================= */
+
+.stats-grid-enhanced {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .stats-grid-enhanced {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .stats-grid-enhanced {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-cell {
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease;
+  z-index: 1;
+}
+
+.stats-cell:hover {
+  transform: scale(1.02);
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(240, 237, 232, 0.08),
+              inset 0 0 20px rgba(240, 237, 232, 0.02);
+}
+
+.stats-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  pointer-events: none;
+}
+
+.stats-cell:hover::after {
+  border-color: rgba(240, 237, 232, 0.2);
+}
+
+.stats-cell--bordered {
+  border-bottom: 1px solid var(--border);
+}
+
+@media (min-width: 640px) {
+  .stats-cell--bordered {
+    border-bottom: none;
+    border-right: 1px solid transparent;
+    background-image: linear-gradient(var(--surface), var(--surface)),
+                      linear-gradient(to bottom, transparent 10%, var(--border) 50%, transparent 90%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+}
+
+.stats-cell-inner {
+  padding: 28px 24px;
+}
+
+.stats-cell-value {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  position: relative;
+  display: inline-block;
+}
+
+.stats-value-text {
+  position: relative;
+  display: inline-block;
+}
+
+.stats-value-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(240, 237, 232, 0.2));
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.stats-value-done::after {
+  width: 100%;
+}
+
+.stats-cell-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   HERO — Enhanced Responsive & UX Polish
+   ========================================================= */
+
+/* Mobile: stack buttons vertically on very small screens */
+@media (max-width: 420px) {
+  .btn-download-cv,
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 22px;
+  }
+}
+
+/* Tablet: optimize hero layout for 768px-1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-grid {
+    gap: 24px;
+    padding: 32px;
+    align-items: center;
+  }
+
+  .hero-grid h1 {
+    font-size: clamp(2.2rem, 7vw, 3.5rem);
+  }
+}
+
+
+/* =========================================================
+   GALLERY — Enhanced UI/UX
+   ========================================================= */
+
+/* Navigation buttons with better visibility */
+.gallery-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-nav-btn:hover {
+  border-color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Image hover zoom + brightness effect */
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.gallery-image {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease !important;
+}
+
+.gallery-item:hover .gallery-image {
+  transform: scale(1.08) !important;
+  filter: brightness(1.15) !important;
+}
+
+/* Lightbox styles */
+.gallery-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.gallery-lightbox-content {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.gallery-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: rotate(90deg);
+}
+
+.gallery-lightbox-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gallery-lightbox-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gallery-lightbox-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.gallery-lightbox-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.gallery-lightbox-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.gallery-lightbox-counter {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .gallery-nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .gallery-lightbox-image-wrap {
+    height: 50vh;
+  }
+
+  .gallery-lightbox-close {
+    top: -44px;
+    right: 0;
+  }
+}
+
+/* =========================================================
+   CONTACT — Enhanced UI/UX
+   ========================================================= */
+
+/* Form wrapper with better spacing */
+.contact-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Floating label group */
+.contact-float-group {
+  position: relative;
+  width: 100%;
+}
+
+/* Enhanced input/textarea field */
+.contact-field-enhanced {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: var(--font-body), sans-serif;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea.contact-field-enhanced {
+  resize: none;
+  padding-top: 24px;
+}
+
+.contact-field-enhanced:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.contact-field-enhanced:focus {
+  border-color: var(--accent);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 3px rgba(240, 237, 232, 0.08);
+}
+
+.contact-field-enhanced.error {
+  border-color: rgb(239, 68, 68);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Floating label */
+.contact-float-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left center;
+}
+
+textarea ~ .contact-float-label {
+  top: 20px;
+  transform: translateY(0);
+}
+
+/* Float label up when focused or has content */
+.contact-field-enhanced:focus ~ .contact-float-label,
+.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
+  top: 8px;
+  transform: translateY(0) scale(0.75);
+  color: var(--accent);
+}
+
+textarea.contact-field-enhanced:focus ~ .contact-float-label,
+textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
+  top: 6px;
+  transform: translateY(0) scale(0.75);
+  color: var(--accent);
+}
+
+/* Focus ring animation */
+.contact-focus-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.contact-field-enhanced:focus ~ .contact-focus-ring {
+  border-color: rgba(240, 237, 232, 0.15);
+  opacity: 1;
+  animation: contact-ring-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes contact-ring-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Error text */
+.contact-error-text {
+  margin-top: -12px;
+  font-size: 12px;
+  color: rgb(239, 68, 68);
+  padding-left: 4px;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* =========================================================
+   FOOTER — Enhanced UI/UX
+   ========================================================= */
+
+/* Gradient separator at top */
+.footer-gradient-separator {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 237, 232, 0.3),
+    var(--accent),
+    rgba(240, 237, 232, 0.3),
+    transparent
+  );
+  opacity: 0.6;
+  margin-bottom: 0;
+}
+
+/* Social icon hover animations */
+.footer-social-icon {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.footer-social-icon:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Nav link with slide-in underline from left */
+.footer-nav-link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: color 0.2s ease;
+  overflow: hidden;
+}
+
+.footer-nav-link:hover {
+  color: var(--text-primary);
+}
+
+.footer-nav-link-text {
+  position: relative;
+  display: inline-block;
+}
+
+.footer-nav-link-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer-nav-link:hover .footer-nav-link-text::after {
+  width: 100%;
+}
+
+
+/* =========================================================
+   ABOUT — Badge Shimmer & Card Hover Enhancements
+   ========================================================= */
+
+@keyframes about-badge-shine {
+  0% {
+    left: -100%;
+  }
+  60% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive badge adjustments */
+@media (max-width: 900px) {
+  .about-badge {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-badge {
+    padding: 6px 10px;
+    font-size: 10px;
   }
 }

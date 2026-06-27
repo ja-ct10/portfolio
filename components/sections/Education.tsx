@@ -126,7 +126,7 @@ function EducationRow({ entry, index }: { entry: EducationEntry; index: number }
 export default function Education() {
   return (
     <section id="education" className="education-section">
-        <div className="section-subtitle">04 — Academic Background</div>
+        <div className="section-subtitle">03 — Academic Background</div>
         <h2 className="section-title mb-6">Education</h2>
 
         <div className="edu-timeline">

@@ -165,6 +165,19 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
 
   useEffect(() => {
     if (!navRef.current || !containerRef.current) return;
+
+    // If activeIndex is out of range (e.g., -1), hide the effect pill
+    if (activeIndex < 0 || activeIndex >= items.length) {
+      if (filterRef.current) {
+        filterRef.current.style.opacity = '0';
+      }
+      return;
+    }
+
+    if (filterRef.current) {
+      filterRef.current.style.opacity = '1';
+    }
+
     const activeLi = navRef.current.querySelectorAll('li')[activeIndex];
     if (activeLi) {
       updateEffectPosition(activeLi);

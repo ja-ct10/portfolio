@@ -45,7 +45,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
     };
     rafRef.current = requestAnimationFrame(animate);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [mounted]);
+  }, [mounted, onComplete]);
 
   useEffect(() => {
     if (!mounted) return;

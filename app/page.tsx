@@ -1,49 +1,25 @@
 "use client";
 
-import { useState, useEffect, useRef, ComponentType } from "react";
-import LoadingPageComponent from "@/components/LoadingPage";
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useReveal } from "@/hooks/useReveal";
+import LoadingPage from "@/components/ui/LoadingPage";
 
-const LoadingPage = LoadingPageComponent as ComponentType<{ onComplete?: () => void }>;
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import ScrollDown from "@/components/ui/ScrollDown";
+import Marquee from "@/components/ui/Marquee";
+import Navbar from "@/components/layout/Navbar";
+import Stats from "@/components/sections/Stats";
+import ScrollToTop from "@/components/ui/ScrollToTop";
+import Footer from "@/components/layout/Footer";
 
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import ScrollDown from "@/components/ScrollDown";
-import TechStack from "@/components/TechStack";
-//import SocialLinks from "@/components/SocialLinks";
-import Projects from "@/components/Projects";
-import Gallery from "@/components/Gallery";
-import Footer from "@/components/Footer";
-import Marquee from "@/components/Marquee";
-import Contact from "@/components/Contact";
-import Stats from "@/components/Stats";
-import Competitions from "@/components/Competitions";
-import ScrollToTop from "@/components/ScrollToTop";
-import Navbar from "@/components/Navbar";
-import Education from "@/components/Education";
-
-// ── Scroll-reveal hook ───────────────────────────────────────────────────────
-function useReveal(threshold = 0.12) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold, rootMargin: "0px 0px -40px 0px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, visible };
-}
+// Dynamic imports for heavier sections (loaded after initial paint)
+const TechStack = dynamic(() => import("@/components/sections/TechStack"), { ssr: false });
+const Portfolio = dynamic(() => import("@/components/sections/Portfolio"), { ssr: false });
+const Gallery = dynamic(() => import("@/components/sections/Gallery"), { ssr: false });
+const Contact = dynamic(() => import("@/components/sections/Contact"), { ssr: false });
+const Education = dynamic(() => import("@/components/sections/Education"), { ssr: false });
 
 // ── Reveal wrapper ───────────────────────────────────────────────────────────
 function Reveal({
@@ -92,6 +68,15 @@ function SectionSeparator() {
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
+  // Always scroll to top on page load/reload
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
   return (
     <>
       <LoadingPage onComplete={() => setLoaded(true)} />
@@ -136,13 +121,7 @@ export default function Home() {
         <SectionSeparator />
 
         <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
-          <Projects />
-        </Reveal>
-
-        <SectionSeparator />
-
-        <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
-          <Competitions />
+          <Portfolio />
         </Reveal>
 
         <SectionSeparator />
@@ -157,6 +136,11 @@ export default function Home() {
           <Contact />
         </Reveal>
 
+        </div>
+
+        <Marquee />
+
+        <div className="section-gutter">
         <Reveal threshold={0.01}>
           <Footer />
         </Reveal>
