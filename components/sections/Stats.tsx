@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 const stats = [
   { value: 20, suffix: "+", label: "Technologies" },
@@ -85,7 +87,9 @@ function StatCell({
 
 export default function Stats() {
   const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
+  const { y: gridY } = useParallax(sectionRef as React.RefObject<HTMLElement | null>, 0.25);
 
   useEffect(() => {
     const el = ref.current;
@@ -104,22 +108,24 @@ export default function Stats() {
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className="stats-grid-enhanced"
-    >
-      {stats.map((stat, i) => (
-        <StatCell
-          key={i}
-          value={stat.value}
-          suffix={stat.suffix}
-          label={stat.label}
-          index={i}
-          started={started}
-          isLast={i === stats.length - 1}
-          total={stats.length}
-        />
-      ))}
-    </div>
+    <motion.div ref={sectionRef} style={{ y: gridY }}>
+      <div
+        ref={ref}
+        className="stats-grid-enhanced"
+      >
+        {stats.map((stat, i) => (
+          <StatCell
+            key={i}
+            value={stat.value}
+            suffix={stat.suffix}
+            label={stat.label}
+            index={i}
+            started={started}
+            isLast={i === stats.length - 1}
+            total={stats.length}
+          />
+        ))}
+      </div>
+    </motion.div>
   );
 }

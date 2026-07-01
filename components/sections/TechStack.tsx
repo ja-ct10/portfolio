@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 import {
   SiHtml5,
@@ -153,17 +155,48 @@ const tools: StackItemProps[] = [
 ];
 
 export default function TechStack() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: headingY } = useParallax(sectionRef, 0.2);
+  const { y: gridY } = useParallax(sectionRef, 0.35);
+  const { y: orbY, disabled: orbDisabled } = useParallax(sectionRef, 0.6);
+
   return (
-    <section id="tech-stack" className="tech-stack-section">
+    <section
+      id="tech-stack"
+      className="tech-stack-section"
+      ref={sectionRef}
+      style={{ position: "relative", overflow: "hidden" }}
+    >
+      <motion.div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "20%",
+          left: "60%",
+          width: 400,
+          height: 400,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, var(--accent), transparent 70%)",
+          opacity: orbDisabled ? 0 : 0.06,
+          pointerEvents: "none",
+          zIndex: 0,
+          y: orbY,
+        }}
+      />
+
+      <motion.div style={{ y: headingY, position: "relative", zIndex: 1 }}>
         <div className="section-subtitle">02 - Capabilities</div>
         <h2 className="section-title mb-6 sm:mb-8">Tech Stack</h2>
+      </motion.div>
 
+      <motion.div style={{ y: gridY, position: "relative", zIndex: 1 }}>
         <div className="tech-categories">
           <Section title="Frontend" items={frontend} />
           <Section title="Backend" items={backend} />
           <Section title="Mobile" items={mobile} />
           <Section title="Developer Tools" items={tools} />
         </div>
+      </motion.div>
     </section>
   );
 }

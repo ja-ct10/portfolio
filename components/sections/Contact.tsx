@@ -3,6 +3,7 @@ import { ArrowRight, Mail, Phone, MapPin, XCircle, CheckCircle2, Loader2 } from 
 import emailjs from "@emailjs/browser";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -17,6 +18,9 @@ export default function Contact() {
   const [toastText, setToastText] = useState("");
   const [shake, setShake] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: headingY } = useParallax(sectionRef, 0.2);
+  const { y: formY } = useParallax(sectionRef, 0.3);
 
   const closeToast = () => {
     setToastOpen(false);
@@ -76,7 +80,7 @@ export default function Contact() {
 
   return (
     <>
-      <section id="contact" className="animate-fade-up delay-5">
+      <section id="contact" ref={sectionRef} className="animate-fade-up delay-5">
         <div className="p-5 sm:p-6 lg:p-7">
 
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
@@ -91,6 +95,7 @@ export default function Contact() {
 
             {/* Left */}
             <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              <motion.div style={{ y: headingY }}>
               <h2 className="contact-heading">
                 Let&apos;s make{" "}
                 <span style={{ fontStyle: "italic", fontWeight: 400, color: "var(--text-secondary)" }}>
@@ -103,6 +108,7 @@ export default function Contact() {
               </p>
 
               <div style={{ height: 1, background: "var(--border)", marginBottom: 24 }} />
+              </motion.div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 <div className="contact-info-row">
@@ -134,6 +140,7 @@ export default function Contact() {
             {/* Right — Form */}
             <motion.div
               ref={formRef}
+              style={{ y: formY }}
               animate={shake ? { x: [0, -8, 8, -6, 6, -3, 3, 0] } : {}}
               transition={{ duration: 0.5 }}
               className="contact-form-wrapper"

@@ -2,7 +2,8 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 const images = [
   "/images/android-hackathon.jpg",
@@ -18,7 +19,8 @@ const images = [
   "/images/symph-workshop-4.png",
   "/images/symph-workshop-5.jpg",
   "/images/kiroverse-workshop.jpg",
-  "/images/kiroverse-workshop-2.jpg"
+  "/images/kiroverse-workshop-2.jpg",
+  "/images/skill-builder-1.jpg",
 ];
 
 export default function Gallery() {
@@ -28,12 +30,8 @@ export default function Gallery() {
   const [totalPages, setTotalPages] = useState(1);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Parallax scroll effect
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const { y: headingY } = useParallax(sectionRef, 0.15);
+  const { y: stripY } = useParallax(sectionRef, 0.35);
 
   const calculatePages = useCallback(() => {
     const container = containerRef.current;
@@ -118,56 +116,60 @@ export default function Gallery() {
       <section id="gallery" className="animate-fade-up delay-5" ref={sectionRef}>
         <div className="section-subtitle">05 — Moments</div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-5">
-          <h2 className="section-title">Gallery</h2>
+        <motion.div style={{ y: headingY }}>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-5">
+            <h2 className="section-title">Gallery</h2>
 
-          <div className="flex gap-2">
-            <motion.button
-              onClick={() => scroll("left")}
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.92 }}
-              className="gallery-nav-btn"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={16} />
-            </motion.button>
-            <motion.button
-              onClick={() => scroll("right")}
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.92 }}
-              className="gallery-nav-btn"
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={16} />
-            </motion.button>
+            <div className="flex gap-2">
+              <motion.button
+                onClick={() => scroll("left")}
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.92 }}
+                className="gallery-nav-btn"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft size={16} />
+              </motion.button>
+              <motion.button
+                onClick={() => scroll("right")}
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.92 }}
+                className="gallery-nav-btn"
+                aria-label="Scroll right"
+              >
+                <ChevronRight size={16} />
+              </motion.button>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div
-          ref={containerRef}
-          className="gallery-scroll"
-          style={{ scrollSnapType: "x mandatory" }}
-        >
-          {images.map((src, i) => (
-            <motion.div
-              className="gallery-item"
-              key={i}
-              style={{ y: parallaxY, scrollSnapAlign: "start" }}
-              onClick={() => setLightboxIndex(i)}
-            >
-              <div className="gallery-image-wrapper">
-                <Image
-                  src={src}
-                  alt={`Gallery photo ${i + 1}`}
-                  fill
-                  sizes="(max-width: 380px) 250px, (max-width: 640px) 280px, 320px"
-                  style={{ objectFit: "contain" }}
-                  className="gallery-image"
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div style={{ y: stripY }}>
+          <div
+            ref={containerRef}
+            className="gallery-scroll"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {images.map((src, i) => (
+              <motion.div
+                className="gallery-item"
+                key={i}
+                style={{ scrollSnapAlign: "start" }}
+                onClick={() => setLightboxIndex(i)}
+              >
+                <div className="gallery-image-wrapper">
+                  <Image
+                    src={src}
+                    alt={`Gallery photo ${i + 1}`}
+                    fill
+                    sizes="(max-width: 380px) 250px, (max-width: 640px) 280px, 320px"
+                    style={{ objectFit: "contain" }}
+                    className="gallery-image"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Dot Pagination */}
         <div

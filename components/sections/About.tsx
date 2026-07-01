@@ -8,6 +8,7 @@ import {
   useSpring,
   useInView,
 } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 export default function About() {
   const [hovered, setHovered] = useState(false);
@@ -16,6 +17,12 @@ export default function About() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const cardsInView = useInView(cardsRef, { once: true, margin: "-60px" });
   const textInView = useInView(textRef, { once: true, margin: "-40px" });
+
+  // Parallax refs + motion values
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: photoY } = useParallax(sectionRef, 0.4);
+  const { y: textY } = useParallax(sectionRef, 0.2);
+  const { y: cardsY } = useParallax(sectionRef, 0.15);
 
   // 3D tilt effect
   const mouseX = useMotionValue(0);
@@ -70,7 +77,7 @@ export default function About() {
   );
 
   return (
-    <section id="about" className="animate-fade-up delay-2 about-section">
+    <section id="about" ref={sectionRef} className="animate-fade-up delay-2 about-section">
       <div className="section-subtitle">01 - Introduction</div>
 
       <h2 className="section-title mb-6">About</h2>
@@ -91,6 +98,7 @@ export default function About() {
             rotateY,
             transformPerspective: 800,
             transformStyle: "preserve-3d",
+            y: photoY,
           }}
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.35 }}
@@ -157,7 +165,7 @@ export default function About() {
         </motion.div>
 
         {/* RIGHT — text content */}
-        <div className="about-content">
+        <motion.div className="about-content" style={{ y: textY }}>
           <div className="about-badge">
             <span className="about-badge-shimmer" />
             <span className="about-badge-text">
@@ -187,28 +195,30 @@ export default function About() {
             </p>
           </div>
 
-          <div className="about-cards" ref={cardsRef}>
-            {[
-              { title: "Backend", subtitle: "Focus" },
-              { title: "Cybersecurity", subtitle: "Interest" },
-              { title: "Open", subtitle: "For Internships" },
-            ].map((card, i) => (
-              <motion.div
-                key={card.title}
-                className="about-info-card"
-                custom={i}
-                initial="hidden"
-                animate={cardsInView ? "visible" : "hidden"}
-                variants={cardVariants}
-                onMouseMove={handleCardMouseMove}
-              >
-                <div className="about-info-card-accent" />
-                <h4>{card.title}</h4>
-                <p>{card.subtitle}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+          <motion.div style={{ y: cardsY }}>
+            <div className="about-cards" ref={cardsRef}>
+              {[
+                { title: "Backend", subtitle: "Focus" },
+                { title: "Cybersecurity", subtitle: "Interest" },
+                { title: "Open", subtitle: "For Internships" },
+              ].map((card, i) => (
+                <motion.div
+                  key={card.title}
+                  className="about-info-card"
+                  custom={i}
+                  initial="hidden"
+                  animate={cardsInView ? "visible" : "hidden"}
+                  variants={cardVariants}
+                  onMouseMove={handleCardMouseMove}
+                >
+                  <div className="about-info-card-accent" />
+                  <h4>{card.title}</h4>
+                  <p>{card.subtitle}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

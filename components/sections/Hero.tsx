@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useParallax } from "@/hooks";
 
 const LightRays = dynamic(() => import("../ui/LightRays"), { ssr: false });
 
@@ -35,6 +36,9 @@ const idCardContainerVariants = {
 
 export default function Hero() {
   const [typingText, setTypingText] = useState("");
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: bgY } = useParallax(sectionRef, 0.3);
+  const { y: idY } = useParallax(sectionRef, 0.5);
 
   const rotateSpring = useSpring(0, { stiffness: 120, damping: 10, mass: 1.2 });
   const swayX = useSpring(0, { stiffness: 80, damping: 12, mass: 1 });
@@ -158,21 +162,23 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="overflow-hidden relative flex flex-1 min-h-0 flex-col items-center gap-6 hero-grid p-4 sm:gap-8 sm:p-6 md:flex-row md:items-center md:justify-between md:gap-8 lg:p-[52px]">
-      <LightRays
-        raysOrigin="top-center"
-        raysColor="#ffffff"
-        raysSpeed={1.0}
-        lightSpread={0.6}
-        rayLength={1.5}
-        pulsating={true}
-        fadeDistance={1.2}
-        saturation={0.7}
-        followMouse={true}
-        mouseInfluence={0.08}
-        noiseAmount={0.03}
-        distortion={0.04}
-      />
+    <section ref={sectionRef} className="overflow-hidden relative flex flex-1 min-h-0 flex-col items-center gap-6 hero-grid p-4 sm:gap-8 sm:p-6 md:flex-row md:items-center md:justify-between md:gap-8 lg:p-[52px]">
+      <motion.div style={{ y: bgY, position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} aria-hidden="true">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#ffffff"
+          raysSpeed={1.0}
+          lightSpread={0.6}
+          rayLength={1.5}
+          pulsating={true}
+          fadeDistance={1.2}
+          saturation={0.7}
+          followMouse={true}
+          mouseInfluence={0.08}
+          noiseAmount={0.03}
+          distortion={0.04}
+        />
+      </motion.div>
 
       {/* Left content — staggered entrance */}
       <motion.div
@@ -264,7 +270,7 @@ export default function Hero() {
       {/* Right — ID card with lanyard + hover lift */}
       <motion.div
         className="relative flex w-full max-w-[240px] flex-shrink-0 flex-col items-center self-center md:self-auto md:max-w-[240px] tablet:max-w-[220px]"
-        style={{ userSelect: "none" }}
+        style={{ userSelect: "none", y: idY }}
         variants={idCardContainerVariants}
         initial="hidden"
         animate="visible"

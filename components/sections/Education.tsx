@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useParallax } from "@/hooks";
 
 interface EducationEntry {
   period: string;
@@ -17,7 +19,7 @@ const entries: EducationEntry[] = [
     course: "BS Information Technology",
     school: "STI College Global City",
     description:
-      "Third-year student specializing in backend development, database design, and cybersecurity. Active in coding competitions and hackathons.",
+      "Fourth-year student specializing in backend development, database design, and cybersecurity. Active in coding competitions and hackathons.",
   },
   {
     period: "2021 — 2023",
@@ -124,17 +126,25 @@ function EducationRow({ entry, index }: { entry: EducationEntry; index: number }
 }
 
 export default function Education() {
-  return (
-    <section id="education" className="education-section">
-        <div className="section-subtitle">03 — Academic Background</div>
-        <h2 className="section-title mb-6">Education</h2>
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: headingY } = useParallax(sectionRef, 0.2);
+  const { y: timelineY } = useParallax(sectionRef, 0.3);
 
-        <div className="edu-timeline">
-          <div className="edu-timeline-spine" aria-hidden="true" />
-          {entries.map((entry, i) => (
-            <EducationRow key={entry.school} entry={entry} index={i} />
-          ))}
-        </div>
+  return (
+    <section id="education" className="education-section" ref={sectionRef}>
+        <motion.div style={{ y: headingY }}>
+          <div className="section-subtitle">03 — Academic Background</div>
+          <h2 className="section-title mb-6">Education</h2>
+        </motion.div>
+
+        <motion.div style={{ y: timelineY }}>
+          <div className="edu-timeline">
+            <div className="edu-timeline-spine" aria-hidden="true" />
+            {entries.map((entry, i) => (
+              <EducationRow key={entry.school} entry={entry} index={i} />
+            ))}
+          </div>
+        </motion.div>
     </section>
   );
 }

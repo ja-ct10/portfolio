@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Medal, Award, RotateCw, ArrowRight, ExternalLink, Cpu, ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useParallax } from "@/hooks";
 
 type Category = "project" | "competition" | "workshop" | "seminar";
 
@@ -52,9 +53,19 @@ const portfolioItems: PortfolioItem[] = [
     tags: ["WEB", "PYGAME"],
     href: "https://coinstrike.vercel.app/",
   },
-  // Competitions
   {
     id: 4,
+    category: "project",
+    title: "IponPay",
+    subtitle: "A blockchain-powered Paluwagan savings platform built on the Stellar network",
+    description: "IponPay brings the centuries-old Filipino rotating savings tradition (Paluwagan) onto the Stellar blockchain. Members contribute a fixed amount of XLM each cycle into a shared pool, and the full pool is paid out to one member at a time — fully transparent, fully on-chain, and verifiable by anyone.",
+    image: "/images/ipon-pay.png",
+    tags: ["WEB3", "BLOCKCHAIN"],
+    href: "http://iponpay.vercel.app/",
+  },
+  // Competitions
+  {
+    id: 5,
     category: "competition",
     title: "Android Hackathon - 2nd Placer",
     subtitle: "Main Developer",
@@ -66,7 +77,7 @@ const portfolioItems: PortfolioItem[] = [
     year: "2026",
   },
   {
-    id: 5,
+    id: 6,
     category: "competition",
     title: "Tagisan ng Talino: Code Fest - 2nd Placer",
     subtitle: "Main Developer",
@@ -78,7 +89,7 @@ const portfolioItems: PortfolioItem[] = [
     year: "2026",
   },
   {
-    id: 6,
+    id: 7,
     category: "competition",
     title: "hack-it! The New Era of Banking - Participant",
     subtitle: "Main Developer, Database Designer",
@@ -90,7 +101,7 @@ const portfolioItems: PortfolioItem[] = [
     year: "2025",
   },
   {
-    id: 7,
+    id: 8,
     category: "competition",
     title: "14th IT Skills Olympics - Participant",
     subtitle: "Java Programming",
@@ -103,28 +114,40 @@ const portfolioItems: PortfolioItem[] = [
   },
   // Workshops
   {
-    id: 8,
-    category: "workshop",
-    title: "Build Nights: Design to Code Workshop",
-    subtitle: "Kiroverse Workshop Week 2",
-    description: "Attended Kiroverse's Design to Code Workshop and learned the complete workflow for transforming Figma designs into production-ready web applications. Gained hands-on experience with Kiro, Figma MCP, design systems, and AI-powered development tools while building a responsive portfolio website using Next.js, React, TypeScript, and Tailwind CSS.",
-    image: "/images/kiroverse-workshop-1.jpg",
-    placement: "ATTENDEE",
-    year: "2026",
-  },
-  {
     id: 9,
     category: "workshop",
     title: "Exploring the Basics of Figma: From Sketch to Prototype",
-    subtitle: "Collab",
+    subtitle: "Learned the basics of Figma",
     description: "Participated in the Collaboratech 2025: Into the Tech Maze workshop, 'Exploring the Basics of Figma: From Sketch to Prototype,' where I learned the fundamentals of UI/UX design and gained hands-on experience creating designs from scratch using Figma.",
     image: "/images/collaboratech.jpg",
     placement: "Attendee",
     year: "2025",
   },
-  // Seminars
   {
     id: 10,
+    category: "workshop",
+    title: "Build Nights: Design to Code Workshop",
+    subtitle: "Kiroverse Workshop Week 2",
+    description: "Sharing my first-ever workshop experience! I attended Build Nights: Design to Code – KiroVerse Workshop Week 2 hosted by AWS User Group Philippines (AWSUG).",
+    details:"I've been using Kiro for about 3 months, but I was still figuring out how to make the most of its features, especially Kiro Powers and Skills. This workshop helped me understand how to connect Figma to Kiro using the MCP server, generate production-ready code, organize projects with a proper design system, and learn the complete workflow for transforming Figma designs into production-ready web applications. I gained hands-on experience with Kiro, Figma MCP, design systems, and AI-powered development tools while building a responsive portfolio website using Next.js, React, TypeScript, and Tailwind CSS. One of the things I enjoyed most was the hands-on activities, where I was able to follow along and apply what was being taught. After the workshop, I started using what I learned in the projects I'm currently building, and it's already helping me work more efficiently. I also had a great time meeting and connecting with fellow developers. Grateful to my friends, Rhenmart Delacruz and Reymark Panes, for encouraging me to attend this event. Looking forward to joining more workshops like this!",
+    image: "/images/kiroverse-workshop-1.jpg",
+    placement: "ATTENDEE",
+    year: "2026",
+  },
+  {
+    id: 11,
+    category: "workshop",
+    title: "Skill Builder Execution Workshop",
+    subtitle: "Build your skills. Empower your community. Create impact.",
+    description: "Spent a productive night at the Skill Builder Execution Workshop hosted by AWS Cloud Clubs Philippines.",
+    details:"I learned a lot from this workshop. Even though I'm not a member of any club or organization, the fact that I'm always the one leading every group project has taught me that it's not only about technical skills but also about leadership skills. Since I'm the type of person who has high expectations for everything I do, when those expectations are not met, I tend to get frustrated and disappointed in myself because I feel like I've failed as a leader. But after this workshop, I've realized that I need to lower my expectations and understand that effective leadership is about helping the team grow, not expecting perfection from everyone. Aside from that, one thing I enjoyed in this workshop was the introduction to NextWork AI, as it was my first time hearing about this platform. NextWork AI is an online learning platform focused on helping people build practical AI, cloud, software engineering, and DevOps skills through hands-on projects, which I loved the most because it provides a guide for me to follow and offers a wide variety of projects to choose from. During the workshop, I chose the Prompt Engineering project, specifically for Healthcare. You have the option to start on your own or follow a step-by-step guide, and I chose the latter. I finished the task in about an hour, and I would say that it really improved how I utilize AI through proper prompt engineering techniques to produce more accurate and trustworthy outputs. It also helped me understand how proper prompt design can reduce AI hallucinations. Big thanks to Sir Nikko for introducing this platform, I will definitely dive deeper into it!",
+    image: "/images/skill-builder.jpg",
+    placement: "Attendee",
+    year: "2025",
+  },
+  // Seminars
+  {
+    id: 12,
     category: "seminar",
     title: "AI at Work PH 2026",
     subtitle: "Insights into AI Agents, Gemini Enterprise, and Google Workplace AI",
@@ -364,6 +387,9 @@ function PortfolioCard({ item }: { item: PortfolioItem }) {
 /* ─── Main Portfolio Section ─── */
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const sectionRef = useRef<HTMLElement>(null);
+  const { y: headingY } = useParallax(sectionRef, 0.2);
+  const { y: gridY } = useParallax(sectionRef, 0.3);
 
   const filtered =
     activeFilter === "all"
@@ -371,85 +397,89 @@ export default function Portfolio() {
       : portfolioItems.filter((item) => item.category === activeFilter);
 
   return (
-    <section id="portfolio" className="animate-fade-up delay-2">
+    <section id="portfolio" className="animate-fade-up delay-2" ref={sectionRef}>
       <div className="card p-5 sm:p-6 lg:p-7">
-        <div className="section-subtitle mb-2">04 — Achievements & Activities</div>
-        <h2 className="section-title mb-4">Portfolio</h2>
+        <motion.div style={{ y: headingY }}>
+          <div className="section-subtitle mb-2">04 — Achievements & Activities</div>
+          <h2 className="section-title mb-4">Portfolio</h2>
 
-        {/* Filter Bar */}
-        <nav
-          className="flex flex-wrap items-center gap-2 sm:gap-3 mb-8"
-          aria-label="Filter portfolio by category"
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-mono), monospace",
-              fontSize: "10px",
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--text-secondary)",
-              marginRight: "4px",
-            }}
+          {/* Filter Bar */}
+          <nav
+            className="flex flex-wrap items-center gap-2 sm:gap-3 mb-8"
+            aria-label="Filter portfolio by category"
           >
-            FILTER_BY:
-          </span>
-          <div className="tab-menu" style={{ position: "relative", zIndex: 10 }}>
-            {FILTERS.map((filter) => (
-              <button
-                key={filter.key}
-                type="button"
-                className="tab-menu-btn relative"
-                onClick={() => setActiveFilter(filter.key)}
-                aria-pressed={activeFilter === filter.key}
-                style={{ position: "relative", zIndex: 1 }}
-              >
-                {activeFilter === filter.key && (
-                  <motion.span
-                    layoutId="portfolio-active-pill"
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background: "var(--accent)",
-                      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.45)",
-                      zIndex: -1,
-                    }}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <span
-                  style={{
-                    color: activeFilter === filter.key ? "var(--bg)" : "inherit",
-                    transition: "color 0.25s ease",
-                  }}
+            <span
+              style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--text-secondary)",
+                marginRight: "4px",
+              }}
+            >
+              FILTER_BY:
+            </span>
+            <div className="tab-menu" style={{ position: "relative", zIndex: 10 }}>
+              {FILTERS.map((filter) => (
+                <button
+                  key={filter.key}
+                  type="button"
+                  className="tab-menu-btn relative"
+                  onClick={() => setActiveFilter(filter.key)}
+                  aria-pressed={activeFilter === filter.key}
+                  style={{ position: "relative", zIndex: 1 }}
                 >
-                  {filter.label} ({getCount(filter.key)})
-                </span>
-              </button>
-            ))}
-          </div>
-        </nav>
+                  {activeFilter === filter.key && (
+                    <motion.span
+                      layoutId="portfolio-active-pill"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: "var(--accent)",
+                        boxShadow: "0 2px 12px rgba(0, 0, 0, 0.45)",
+                        zIndex: -1,
+                      }}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span
+                    style={{
+                      color: activeFilter === filter.key ? "var(--bg)" : "inherit",
+                      transition: "color 0.25s ease",
+                    }}
+                  >
+                    {filter.label} ({getCount(filter.key)})
+                  </span>
+                </button>
+              ))}
+            </div>
+          </nav>
+        </motion.div>
 
         {/* Portfolio Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3"
-          style={{ minHeight: "360px" }}
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.96, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: 15 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="h-full"
-              >
-                <PortfolioCard item={item} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        <motion.div style={{ y: gridY }}>
+          <motion.div
+            layout
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3"
+            style={{ minHeight: "360px" }}
+          >
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 15 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full"
+                >
+                  <PortfolioCard item={item} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
       </div>
     </section>

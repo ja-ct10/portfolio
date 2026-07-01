@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useReveal } from "@/hooks/useReveal";
 import LoadingPage from "@/components/ui/LoadingPage";
+import { ScrollProgressBar } from "@/components/ui";
 
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -79,6 +80,7 @@ export default function Home() {
 
   return (
     <>
+      <ScrollProgressBar />
       <LoadingPage onComplete={() => setLoaded(true)} />
         
       <Navbar visible={loaded} />
