@@ -79,18 +79,6 @@ const portfolioItems: PortfolioItem[] = [
   {
     id: 6,
     category: "competition",
-    title: "Tagisan ng Talino: Code Fest - 2nd Placer",
-    subtitle: "Main Developer",
-    description: "Built an e-commerce mobile app under 5 hours with a 3-person team.",
-    details:
-      "We competed in Tagisan ng Talino: CodeFest, a local-level mobile app hackathon, where we were tasked to develop an Android application focused on managing construction inventory and handling the borrowing and returning of construction equipment. The system also required features such as tracking item availability, recording transactions, and generating PDF reports for documentation and monitoring purposes. As the main developer, I was able to design and implement a functional and user-friendly interface, including core features for inventory management and equipment borrowing/returning workflows. The application also emphasized accurate record keeping and efficient data management to support real-world construction site operations.",
-    image: "/images/code-fest.jpg",
-    placement: "2ND",
-    year: "2026",
-  },
-  {
-    id: 7,
-    category: "competition",
     title: "hack-it! The New Era of Banking - Participant",
     subtitle: "Main Developer, Database Designer",
     description: "Built AI-assisted KYC insurance platform for faster application review and processing.",
@@ -101,7 +89,7 @@ const portfolioItems: PortfolioItem[] = [
     year: "2025",
   },
   {
-    id: 8,
+    id: 7,
     category: "competition",
     title: "14th IT Skills Olympics - Participant",
     subtitle: "Java Programming",
@@ -112,9 +100,33 @@ const portfolioItems: PortfolioItem[] = [
     placement: "PARTICIPANT",
     year: "2025",
   },
-  // Workshops
+  {
+    id: 8,
+    category: "competition",
+    title: "Tagisan ng Talino: Code Fest - 2nd Placer",
+    subtitle: "Main Developer",
+    description: "Built an e-commerce mobile app under 5 hours with a 3-person team.",
+    details:
+      "We competed in Tagisan ng Talino: CodeFest, a local-level mobile app hackathon, where we were tasked to develop an Android application focused on managing construction inventory and handling the borrowing and returning of construction equipment. The system also required features such as tracking item availability, recording transactions, and generating PDF reports for documentation and monitoring purposes. As the main developer, I was able to design and implement a functional and user-friendly interface, including core features for inventory management and equipment borrowing/returning workflows. The application also emphasized accurate record keeping and efficient data management to support real-world construction site operations.",
+    image: "/images/code-fest.jpg",
+    placement: "2ND",
+    year: "2026",
+  },
   {
     id: 9,
+    category: "competition",
+    title: "Stellar Journey to Mastery: Monthly Builder Challenges",
+    subtitle: "Building IponPay on Stellar",
+    description: "Participated in the Stellar Journey to Mastery competition by developing IponPay, a blockchain-powered community savings platform inspired by the Filipino tradition of Paluwagan.",
+    details:
+      "Joined in the Stellar Journey to Mastery: Monthly Builder Challenges, where I designed and developed IponPay—a blockchain-powered community savings platform built on the Stellar Testnet. Inspired by the Filipino Paluwagan system, IponPay modernizes informal rotating savings groups by enabling transparent XLM contributions, wallet-based authentication, on-chain transaction verification, and immutable contribution records through Soroban smart contracts. Throughout the competition, I applied modern web development practices using Next.js, TypeScript, Tailwind CSS, and Stellar SDK while gaining hands-on experience with blockchain development, smart contract programming in Rust, wallet integration, and decentralized application architecture. This experience strengthened my skills in Web3 development, financial technology, problem-solving, and building production-ready applications on the Stellar ecosystem.",
+    image: "/images/stellar.png",
+    placement: "PARTICIPANT",
+    year: "2026",
+  },
+  // Workshops
+  {
+    id: 10,
     category: "workshop",
     title: "Exploring the Basics of Figma: From Sketch to Prototype",
     subtitle: "Learned the basics of Figma",
@@ -124,7 +136,18 @@ const portfolioItems: PortfolioItem[] = [
     year: "2025",
   },
   {
-    id: 10,
+    id: 11,
+    category: "workshop",
+    title: "Build on Stellar Bootcamp - STI Global",
+    subtitle: "Learning Blockchain & Smart Contract Development",
+    description: "Participated in the Build on Stellar Bootcamp: STI Global Edition, where I learned to build and deploy smart contracts on the Stellar network using Soroban.",
+    details: "Attended the Build on Stellar Bootcamp: STI Global Edition, a hands-on blockchain workshop focused on developing decentralized applications on the Stellar network. Throughout the bootcamp, I learned the fundamentals of Stellar and Soroban, wrote and deployed my first smart contract, and gained practical experience building blockchain applications through live coding sessions. The workshop emphasized learning by doing, allowing participants to experiment, receive real-time guidance, and deploy working smart contracts on Stellar Testnet. This experience strengthened my understanding of Web3 development, smart contract programming in Rust, the Stellar ecosystem, and decentralized application architecture, while also providing a portfolio-ready project and preparing me for future Stellar hackathons and ecosystem opportunities.",
+    image: "/images/stellar-bootcamp.jpg",
+    placement: "ATTENDEE",
+    year: "2026",
+  },
+  {
+    id: 12,
     category: "workshop",
     title: "Build Nights: Design to Code Workshop",
     subtitle: "Kiroverse Workshop Week 2",
@@ -135,7 +158,7 @@ const portfolioItems: PortfolioItem[] = [
     year: "2026",
   },
   {
-    id: 11,
+    id: 13,
     category: "workshop",
     title: "Skill Builder Execution Workshop",
     subtitle: "Build your skills. Empower your community. Create impact.",
@@ -147,7 +170,7 @@ const portfolioItems: PortfolioItem[] = [
   },
   // Seminars
   {
-    id: 12,
+    id: 14,
     category: "seminar",
     title: "AI at Work PH 2026",
     subtitle: "Insights into AI Agents, Gemini Enterprise, and Google Workplace AI",
@@ -400,7 +423,7 @@ export default function Portfolio() {
     <section id="portfolio" className="animate-fade-up delay-2" ref={sectionRef}>
       <div className="card p-5 sm:p-6 lg:p-7">
         <motion.div style={{ y: headingY }}>
-          <div className="section-subtitle mb-2">04 — Achievements & Activities</div>
+          <div className="section-subtitle mb-2">05 — Achievements & Activities</div>
           <h2 className="section-title mb-4">Portfolio</h2>
 
           {/* Filter Bar */}

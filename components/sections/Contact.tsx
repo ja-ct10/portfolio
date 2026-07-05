@@ -84,7 +84,7 @@ export default function Contact() {
         <div className="p-5 sm:p-6 lg:p-7">
 
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
-            <div className="section-subtitle" style={{ marginBottom: 0 }}>06 — Get in Touch</div>
+            <div className="section-subtitle" style={{ marginBottom: 0 }}>07 — Get in Touch</div>
             <span className="contact-available-badge">
               <span className="contact-blink-dot" />
               Available for Internships

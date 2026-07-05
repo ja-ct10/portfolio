@@ -185,7 +185,7 @@ export default function TechStack() {
       />
 
       <motion.div style={{ y: headingY, position: "relative", zIndex: 1 }}>
-        <div className="section-subtitle">02 - Capabilities</div>
+        <div className="section-subtitle">03 - Capabilities</div>
         <h2 className="section-title mb-6 sm:mb-8">Tech Stack</h2>
       </motion.div>
 

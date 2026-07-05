@@ -78,7 +78,7 @@ export default function About() {
 
   return (
     <section id="about" ref={sectionRef} className="animate-fade-up delay-2 about-section">
-      <div className="section-subtitle">01 - Introduction</div>
+      <div className="section-subtitle">02 - Introduction</div>
 
       <h2 className="section-title mb-6">About</h2>
 

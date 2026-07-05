@@ -7,7 +7,7 @@ import { useParallax } from "@/hooks";
 const stats = [
   { value: 20, suffix: "+", label: "Technologies" },
   { value: 5, suffix: "+", label: "Competitions" },
-  { value: 3, suffix: "+", label: "Certifications" },
+  { value: 4, suffix: "+", label: "Projects" },
   { value: null, suffix: "∞", label: "Curiosity" },
 ];
 
