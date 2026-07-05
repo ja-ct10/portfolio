@@ -7,6 +7,7 @@ import GooeyNav from "./GooeyNav";
 
 const NAV_LINKS = [
   { label: "Home", href: "#top" },
+  { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
   { label: "Tech Stack", href: "#tech-stack" },
   { label: "Education", href: "#education" },
@@ -34,29 +35,23 @@ export default function Navbar({ visible = true }: NavbarProps) {
       // Skip scroll-based active detection while a programmatic scroll is in progress
       if (isScrollingToRef.current) return;
 
-      // Use 40% of viewport height as the detection point
-      const scrollPosition = window.scrollY + window.innerHeight * 0.35;
+      // Use 20% of viewport height as the detection point (catches sections near top of viewport)
+      const scrollPosition = window.scrollY + window.innerHeight * 0.2;
 
-      // If we're in the contact section, don't highlight any nav link
+      // Check if we're at or near the bottom of the page — deactivate nav pill (contact area)
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 300;
+      if (atBottom) {
+        setActiveSection(-1);
+        return;
+      }
+
+      // Check if we're in the contact section — deactivate nav pill
       const contactEl = document.querySelector("#contact");
       if (contactEl) {
         const contactTop = contactEl.getBoundingClientRect().top + window.scrollY;
         if (scrollPosition >= contactTop) {
           setActiveSection(-1);
           return;
-        }
-      }
-
-      // Check if we're at the very bottom of the page — highlight last nav item
-      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
-      if (atBottom) {
-        // Find the last visible section in NAV_LINKS
-        for (let i = NAV_LINKS.length - 1; i >= 0; i--) {
-          const el = document.querySelector(NAV_LINKS[i].href);
-          if (el) {
-            setActiveSection(i);
-            return;
-          }
         }
       }
 
@@ -99,9 +94,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
 
     // Immediately set active section to the clicked item
     const clickedIndex = NAV_LINKS.findIndex((link) => link.href === href);
-    if (clickedIndex !== -1) {
-      setActiveSection(clickedIndex);
-    }
+    setActiveSection(clickedIndex);
 
     // Disable scroll-based detection while smooth scrolling is in progress
     isScrollingToRef.current = true;

@@ -16,6 +16,7 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 
 // Dynamic imports for heavier sections (loaded after initial paint)
+const Services = dynamic(() => import("@/components/sections/Services"), { ssr: false });
 const TechStack = dynamic(() => import("@/components/sections/TechStack"), { ssr: false });
 const Portfolio = dynamic(() => import("@/components/sections/Portfolio"), { ssr: false });
 const Gallery = dynamic(() => import("@/components/sections/Gallery"), { ssr: false });
@@ -102,6 +103,11 @@ export default function Home() {
 
         <div className="section-gutter">
         <Reveal className="mb-5" delay={0.05}>
+          <Services />
+        </Reveal>
+        <SectionSeparator />
+
+        <Reveal className="pt-6 sm:pt-12 lg:pt-16 mb-5">
           <About />
         </Reveal>
 
