@@ -13,6 +13,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
   const [dots, setDots] = useState(0);
   const rafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
+  const alreadyPlayed = useRef(false);
 
   const DURATION = 2800;
   const labels = ["Initializing", "Loading Assets", "Almost Ready"];
@@ -22,10 +23,18 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
     return 2;
   };
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+    // Skip loading animation if already played this session
+    if (typeof window !== "undefined" && sessionStorage.getItem("portfolio-loaded")) {
+      alreadyPlayed.current = true;
+      setPhase("done");
+      onComplete?.();
+    }
+  }, [onComplete]);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || alreadyPlayed.current) return;
     const animate = (ts: number) => {
       if (!startRef.current) startRef.current = ts;
       const elapsed = ts - startRef.current;
@@ -39,6 +48,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
         setTimeout(() => {
           setPhase("exit");
           onComplete?.();
+          sessionStorage.setItem("portfolio-loaded", "1");
           setTimeout(() => setPhase("done"), 650);
         }, 350);
       }
@@ -48,7 +58,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
   }, [mounted, onComplete]);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || alreadyPlayed.current) return;
     const id = setInterval(() => setDots((d) => (d + 1) % 4), 500);
     return () => clearInterval(id);
   }, [mounted]);

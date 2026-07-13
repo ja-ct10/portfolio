@@ -348,6 +348,7 @@ export default function Hero() {
               src="/images/main-profile.jpg"
               alt="Julie Ann Tiron" fill draggable={false}
               sizes="(max-width: 768px) 100vw, 400px"
+              priority
               style={{ objectFit: "cover", objectPosition: "center top", pointerEvents: "none" }}
             />
             <div style={{

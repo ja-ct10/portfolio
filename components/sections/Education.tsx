@@ -133,7 +133,7 @@ export default function Education() {
   return (
     <section id="education" className="education-section" ref={sectionRef}>
         <motion.div style={{ y: headingY }}>
-          <div className="section-subtitle">04 — Academic Background</div>
+          <div className="section-subtitle">03 — Academic Background</div>
           <h2 className="section-title mb-6">Education</h2>
         </motion.div>
 

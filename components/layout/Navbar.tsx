@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import GooeyNav from "./GooeyNav";
@@ -9,8 +9,8 @@ const NAV_LINKS = [
   { label: "Home", href: "#top" },
   { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
-  { label: "Tech Stack", href: "#tech-stack" },
   { label: "Education", href: "#education" },
+  { label: "Tech Stack", href: "#tech-stack" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Gallery", href: "#gallery" },
 ];
@@ -24,28 +24,28 @@ export default function Navbar({ visible = true }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
 
-  // Ref to track whether scroll detection is temporarily disabled (during programmatic scroll)
   const isScrollingToRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  /* ── Scroll-based active section detection ────────────────────────── */
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 48);
 
-      // Skip scroll-based active detection while a programmatic scroll is in progress
       if (isScrollingToRef.current) return;
 
-      // Use 20% of viewport height as the detection point (catches sections near top of viewport)
       const scrollPosition = window.scrollY + window.innerHeight * 0.2;
 
-      // Check if we're at or near the bottom of the page — deactivate nav pill (contact area)
-      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 300;
+      // Near bottom of page or in contact section — deactivate pill
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 300;
       if (atBottom) {
         setActiveSection(-1);
         return;
       }
 
-      // Check if we're in the contact section — deactivate nav pill
       const contactEl = document.querySelector("#contact");
       if (contactEl) {
         const contactTop = contactEl.getBoundingClientRect().top + window.scrollY;
@@ -55,26 +55,28 @@ export default function Navbar({ visible = true }: NavbarProps) {
         }
       }
 
+      // At the top — Home
+      if (window.scrollY < 120) {
+        setActiveSection(0);
+        return;
+      }
+
+      // Iterate backwards through NAV_LINKS to find active section
       for (let i = NAV_LINKS.length - 1; i >= 0; i--) {
         const link = NAV_LINKS[i];
-        if (link.href === "#top") {
-          if (window.scrollY < 120) {
-            setActiveSection(0);
-            break;
-          }
-          continue;
-        }
+        if (link.href === "#top") continue;
 
         const el = document.querySelector(link.href);
         if (el) {
-          const rect = el.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
+          const top = el.getBoundingClientRect().top + window.scrollY;
           if (scrollPosition >= top) {
             setActiveSection(i);
-            break;
+            return;
           }
         }
       }
+
+      setActiveSection(0);
     };
 
     handleScroll();
@@ -82,25 +84,25 @@ export default function Navbar({ visible = true }: NavbarProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /* ── Menu open body lock ──────────────────────────────────────────── */
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const scrollTo = (href: string) => {
+  /* ── Scroll helper ────────────────────────────────────────────────── */
+
+  const scrollTo = useCallback((href: string) => {
     setMenuOpen(false);
 
-    // Immediately set active section to the clicked item
+    // Set active immediately
     const clickedIndex = NAV_LINKS.findIndex((link) => link.href === href);
     setActiveSection(clickedIndex);
 
-    // Disable scroll-based detection while smooth scrolling is in progress
+    // Disable scroll detection during smooth scroll
     isScrollingToRef.current = true;
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingToRef.current = false;
     }, 1000);
@@ -111,7 +113,9 @@ export default function Navbar({ visible = true }: NavbarProps) {
     }
     const target = document.querySelector(href);
     target?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  }, []);
+
+  /* ── Render ───────────────────────────────────────────────────────── */
 
   return (
     <header
@@ -119,6 +123,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
     >
       <div className="site-nav-shell">
         <div className="site-nav-inner">
+          {/* Brand logo */}
           <button
             type="button"
             className="site-nav-brand"
@@ -135,6 +140,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
             />
           </button>
 
+          {/* Desktop nav */}
           <nav className="site-nav-links" aria-label="Main navigation">
             <GooeyNav
               items={NAV_LINKS}
@@ -144,6 +150,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
             />
           </nav>
 
+          {/* Actions */}
           <div className="site-nav-actions">
             <button
               type="button"
@@ -158,7 +165,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
               className="site-nav-toggle"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => setMenuOpen((o) => !o)}
             >
               {menuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -166,6 +173,7 @@ export default function Navbar({ visible = true }: NavbarProps) {
         </div>
       </div>
 
+      {/* Mobile overlay */}
       <div
         className="site-nav-mobile"
         aria-hidden={!menuOpen}

@@ -131,12 +131,12 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     }
     
     const liEl = e.currentTarget;
-    if (activeIndex === index) return;
 
     if (propActiveIndex === undefined) {
       setLocalActiveIndex(index);
-      updateEffectPosition(liEl);
     }
+
+    updateEffectPosition(liEl);
 
     if (filterRef.current) {
       const particles = filterRef.current.querySelectorAll('.particle');

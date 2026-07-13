@@ -70,12 +70,28 @@ function SectionSeparator() {
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
-  // Always scroll to top on page load/reload
+  // On mount: check if loading was already played, and handle hash navigation
   useEffect(() => {
-    window.history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
-    if (window.location.hash) {
-      window.history.replaceState(null, "", window.location.pathname);
+    const alreadyPlayed = sessionStorage.getItem("portfolio-loaded");
+    
+    if (alreadyPlayed) {
+      // Skip loading, show content immediately
+      setLoaded(true);
+      // If there's a hash (e.g. #portfolio), scroll to it after a brief delay
+      if (window.location.hash) {
+        const hash = window.location.hash;
+        setTimeout(() => {
+          const el = document.querySelector(hash);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    } else {
+      // First visit: scroll to top, remove hash
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
     }
   }, []);
 
@@ -117,13 +133,13 @@ export default function Home() {
         <SectionSeparator />
 
         <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
-          <TechStack />
+          <Education />
         </Reveal>
 
         <SectionSeparator />
 
         <Reveal className="pt-8 sm:pt-12 lg:pt-16 mb-5">
-          <Education />
+          <TechStack />
         </Reveal>
 
         <SectionSeparator />
