@@ -6004,3 +6004,209 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
   bottom: 0;
   background: linear-gradient(to top, var(--surface), transparent);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE - Portfolio V2, Case Study, Tech Stack (all devices)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Portfolio Cards - tablet ── */
+@media (max-width: 768px) {
+  .portfolio-v2-card-body {
+    padding: 14px;
+  }
+
+  .portfolio-v2-title {
+    font-size: 15px;
+  }
+
+  .portfolio-v2-desc {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .portfolio-v2-demo-bar {
+    margin: 0 10px;
+    padding: 8px 8px 8px 14px;
+  }
+
+  .portfolio-v2-demo-text {
+    font-size: 9px;
+  }
+
+  .portfolio-v2-demo-icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* ── Case Study Page - tablet ── */
+@media (max-width: 768px) {
+  .case-study-nav {
+    padding: 12px 16px;
+  }
+
+  .case-study-content {
+    padding: 32px 16px;
+  }
+
+  .case-study-title {
+    font-size: 28px;
+  }
+
+  .case-study-section {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .case-study-two-col {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .case-study-hero-panel {
+    padding: 12px;
+  }
+
+  .case-study-highlight-card {
+    padding: 12px 14px;
+  }
+
+  .case-study-highlight-value {
+    font-size: 18px;
+  }
+
+  .case-study-feature-item {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .case-study-outcome-card {
+    padding: 14px;
+  }
+
+  .case-study-outcome-text {
+    font-size: 13px;
+  }
+
+  .case-study-live-btn {
+    font-size: 10px;
+    padding: 8px 16px;
+  }
+
+  .case-study-page-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* ── Case Study Page - small mobile ── */
+@media (max-width: 420px) {
+  .case-study-content {
+    padding: 24px 12px;
+  }
+
+  .case-study-title {
+    font-size: 24px;
+  }
+
+  .case-study-meta-strip {
+    font-size: 9px;
+    gap: 5px;
+  }
+
+  .case-study-section-title {
+    font-size: 20px;
+  }
+
+  .case-study-col-title {
+    font-size: 20px;
+  }
+
+  .case-study-highlights {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .case-study-outcome-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-study-stack-chips {
+    gap: 6px;
+  }
+
+  .case-study-stack-chip {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+}
+
+/* ── Tech Stack 3D Marquee - small mobile ── */
+@media (max-width: 420px) {
+  .marquee-3d-wrapper {
+    height: 350px;
+    border-radius: 12px;
+  }
+
+  .marquee-3d-scene {
+    scale: 0.35;
+  }
+
+  .marquee-3d-card {
+    width: 140px;
+    height: 140px;
+    border-radius: 12px;
+  }
+
+  .marquee-3d-img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .techstack-header {
+    margin-bottom: 16px;
+  }
+
+  .techstack-desc {
+    font-size: 10px;
+  }
+}
+
+/* ── Portfolio section - small mobile ── */
+@media (max-width: 420px) {
+  .portfolio-v2-card-header {
+    padding: 10px 12px 0;
+  }
+
+  .portfolio-v2-category-chip {
+    font-size: 8px;
+    padding: 3px 8px;
+  }
+
+  .portfolio-v2-year {
+    font-size: 9px;
+  }
+
+  .portfolio-v2-glyph-area {
+    min-height: 100px;
+    padding: 16px 12px;
+  }
+
+  .portfolio-v2-card-body {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .portfolio-v2-title {
+    font-size: 14px;
+  }
+
+  .portfolio-v2-tags {
+    gap: 4px;
+  }
+
+  .portfolio-v2-tag {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+}
