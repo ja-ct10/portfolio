@@ -85,6 +85,19 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
       <div className="loader-corner loader-corner-br" />
 
       <div className="loader-content">
+        {/* Animated logo */}
+        <div className="loader-logo-wrap">
+          <div className="loader-logo-glow" />
+          <div className="loader-logo-ring" />
+          <img
+            src="/images/logo.png"
+            alt="Logo"
+            width={64}
+            height={64}
+            className="loader-logo-img"
+          />
+        </div>
+
         {/* Circular progress ring */}
         <div className="loader-ring-wrap">
           <svg className="loader-ring" viewBox="0 0 100 100">
