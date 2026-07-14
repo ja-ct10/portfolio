@@ -235,13 +235,14 @@ export default function Portfolio() {
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.92, y: 24 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                initial={{ opacity: 0, y: 50, scale: 0.94 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.92, y: 24 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{
-                  duration: 0.45,
-                  delay: idx * 0.05,
-                  ease: [0.16, 1, 0.3, 1],
+                  duration: 0.55,
+                  delay: idx * 0.06,
+                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
                 }}
                 className="h-full"
               >

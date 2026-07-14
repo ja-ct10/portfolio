@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Mail, Phone, MapPin, XCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, Mail, MapPin, XCircle, CheckCircle2, Loader2 } from "lucide-react";
 import emailjs from "@emailjs/browser";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -118,13 +118,6 @@ export default function Contact() {
                     <a href="mailto:tironjulieann10@gmail.com" className="contact-info-value">
                       tironjulieann10@gmail.com
                     </a>
-                  </div>
-                </div>
-                <div className="contact-info-row">
-                  <Phone size={15} color="var(--text-primary)" />
-                  <div>
-                    <p className="contact-info-label">Phone</p>
-                    <a href="tel:+639569128159" className="contact-info-value">+63 956 912 8159</a>
                   </div>
                 </div>
                 <div className="contact-info-row" style={{ borderBottom: "none" }}>

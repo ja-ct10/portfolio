@@ -1,150 +1,94 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { useParallax } from "@/hooks";
+import { GraduationCap, Calendar, MapPin, BookOpen } from "lucide-react";
 
-interface EducationEntry {
-  period: string;
-  status: "ONGOING" | "GRADUATED";
-  course: string;
-  school: string;
-  description?: string;
-}
-
-const entries: EducationEntry[] = [
-  {
-    period: "2023 — Present",
-    status: "ONGOING",
-    course: "BS Information Technology",
-    school: "STI College Global City",
-    description:
-      "Fourth-year student specializing in backend development, database design, and cybersecurity. Active in coding competitions and hackathons.",
-  },
-  {
-    period: "2021 — 2023",
-    status: "GRADUATED",
-    course: "Humanities and Social Sciences (HUMSS) Strand",
-    school: "University of Makati",
-  },
-  {
-    period: "2017 — 2021",
-    status: "GRADUATED",
-    course: "Junior High School",
-    school: "Tibagan High School",
-  },
-  {
-    period: "2011 — 2017",
-    status: "GRADUATED",
-    course: "Elementary Education",
-    school: "East Rembo Elementary School",
-  },
+const highlights = [
+  "Specializing in backend development and database design",
+  "Active in coding competitions and hackathons",
+  "Building full-stack web and mobile applications",
+  "Learning blockchain development and cybersecurity",
 ];
 
-function GraduationCapIcon() {
-  return (
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-      <path d="M6 12v5c3.33 2 8.67 2 12 0v-5" />
-    </svg>
-  );
-}
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
-function useReveal(ref: React.RefObject<HTMLElement | null>, delay = 0) {
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => el.classList.add("visible"), delay);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [ref, delay]);
-}
-
-function EducationRow({ entry, index }: { entry: EducationEntry; index: number }) {
-  const isFlipped = index % 2 === 1;
-  const isFirst = index === 0;
-  const base = index * 120;
-
-  const metaRef = useRef<HTMLDivElement>(null);
-  const nodeRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useReveal(metaRef, base);
-  useReveal(nodeRef, base + 80);
-  useReveal(cardRef, base + 140);
-
-  return (
-    <article className={`edu-row${isFlipped ? " edu-row--flip" : ""}`}>
-      <div className="edu-node">
-        <div
-          ref={nodeRef}
-          className={`edu-node-circle edu-reveal from-down${isFirst ? " glow" : ""}`}
-        >
-          <GraduationCapIcon />
-        </div>
-      </div>
-
-      <div ref={metaRef} className="edu-tl-meta edu-reveal from-down">
-        <span className="edu-tl-year">{entry.period}</span>
-        <span className={`edu-tl-status ${entry.status.toLowerCase()}`}>
-          {entry.status}
-        </span>
-      </div>
-
-      <div ref={cardRef} className="edu-tl-card edu-reveal from-down">
-        <p className="edu-tl-course">{entry.course}</p>
-        <p className="edu-tl-school">{entry.school}</p>
-        {entry.description && (
-          <>
-            <div className="edu-tl-divider" />
-            <p className="edu-tl-desc">{entry.description}</p>
-          </>
-        )}
-      </div>
-    </article>
-  );
-}
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+};
 
 export default function Education() {
   const sectionRef = useRef<HTMLElement>(null);
-  const { y: headingY } = useParallax(sectionRef, 0.2);
-  const { y: timelineY } = useParallax(sectionRef, 0.3);
+  const { y: headingY } = useParallax(sectionRef, 0.15);
 
   return (
-    <section id="education" className="education-section" ref={sectionRef}>
-        <motion.div style={{ y: headingY }}>
-          <div className="section-subtitle">03 — Academic Background</div>
-          <h2 className="section-title mb-6">Education</h2>
-        </motion.div>
+    <section id="education" ref={sectionRef}>
+      <motion.div style={{ y: headingY }}>
+        <div className="section-subtitle mb-2">03 - ACADEMIC BACKGROUND</div>
+        <h2 className="section-title mb-8">Education<span style={{ color: "rgba(255,255,255,0.7)" }}>.</span></h2>
+      </motion.div>
 
-        <motion.div style={{ y: timelineY }}>
-          <div className="edu-timeline">
-            <div className="edu-timeline-spine" aria-hidden="true" />
-            {entries.map((entry, i) => (
-              <EducationRow key={entry.school} entry={entry} index={i} />
-            ))}
+      <motion.div
+        className="edu-card-main"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Top strip */}
+        <div className="edu-card-strip">
+          <span className="edu-card-status">ONGOING</span>
+          <span className="edu-card-year">
+            <Calendar size={11} />
+            2023 - Present
+          </span>
+        </div>
+
+        {/* Main content */}
+        <div className="edu-card-content">
+          <div className="edu-card-icon">
+            <GraduationCap size={28} strokeWidth={1.5} />
           </div>
+
+          <div className="edu-card-info">
+            <h3 className="edu-card-degree">BS Information Technology</h3>
+            <div className="edu-card-school">
+              <MapPin size={12} />
+              <span>STI College Global City</span>
+            </div>
+            <p className="edu-card-desc">
+              Fourth-year student focused on building reliable systems, designing databases, and developing secure applications. Consistently participating in hackathons and tech events to sharpen real-world development skills.
+            </p>
+          </div>
+        </div>
+
+        {/* Highlights */}
+        <motion.div
+          className="edu-card-highlights"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {highlights.map((item, i) => (
+            <motion.div
+              key={i}
+              className="edu-highlight-item"
+              variants={fadeUp}
+              transition={{ duration: 0.4 }}
+            >
+              <BookOpen size={12} className="edu-highlight-icon" />
+              <span>{item}</span>
+            </motion.div>
+          ))}
         </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -295,10 +295,10 @@ export const portfolioItems: PortfolioItem[] = [
     slug: "figma-workshop",
     category: "workshop",
     title: "Exploring the Basics of Figma: From Sketch to Prototype",
-
     subtitle: "Learned the basics of Figma",
     description:
-      "Learned the fundamentals of UI/UX design and hands-on experience creating designs in Figma.",
+      "Learned the basics of Figma thru hands-on practices.",
+    details:"Participated in the Collaboratech 2025: Into the Tech Maze workshop, 'Exploring the Basics of Figma: From Sketch to Prototype,' where I learned the fundamentals of UI/UX design and gained hands-on experience creating designs from scratch using Figma.",
     image: "/images/collaboratech.jpg",
     tags: ["UI/UX", "FIGMA"],
     placement: "ATTENDEE",
@@ -385,7 +385,8 @@ export const portfolioItems: PortfolioItem[] = [
 
     subtitle: "Insights into AI Agents, Gemini Enterprise, and Google Workplace AI",
     description:
-      "Attended AI at Work PH 2026 at Seda BGC, organized by Symph and Google. Gained insights into AI Agents, Gemini Enterprise, and Google Workspace, and learned how AI empowers people to work more efficiently, make better decisions, and improve productivity in modern workplaces.",
+      "Attended AI at Work PH 2026 at Seda BGC, organized by Symph and Google.",
+    details: "Attended AI at Work PH 2026 at Seda BGC, organized by Symph and Google. Gained insights into AI Agents, Gemini Enterprise, and Google Workspace, and learned how AI empowers people to work more efficiently, make better decisions, and improve productivity in modern workplaces.",
     image: "/images/symph-workshop-1.png",
     tags: ["AI", "GOOGLE"],
     placement: "ATTENDEE",

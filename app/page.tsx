@@ -43,12 +43,12 @@ function Reveal({
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0px)" : "translateY(40px)",
+        transform: visible ? "translate3d(0,0,0)" : "translate3d(0,40px,0)",
         transition: visible
-          ? `opacity 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}s,
-             transform 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}s`
+          ? `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s,
+             transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`
           : "none",
-        willChange: "opacity, transform",
+        willChange: visible ? "auto" : "opacity, transform",
       }}
     >
       {children}

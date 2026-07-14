@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LoadingPageProps {
   onComplete?: () => void;
@@ -9,12 +10,12 @@ interface LoadingPageProps {
 export default function LoadingPage({ onComplete }: LoadingPageProps) {
   const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "reveal" | "exit" | "done">("loading");
+  const [phase, setPhase] = useState<"loading" | "exit" | "done">("loading");
   const rafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
   const alreadyPlayed = useRef(false);
 
-  const DURATION = 2600;
+  const DURATION = 2400;
 
   useEffect(() => {
     setMounted(true);
@@ -38,14 +39,11 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
         rafRef.current = requestAnimationFrame(animate);
       } else {
         setTimeout(() => {
-          setPhase("reveal");
-          setTimeout(() => {
-            setPhase("exit");
-            onComplete?.();
-            sessionStorage.setItem("portfolio-loaded", "1");
-            setTimeout(() => setPhase("done"), 700);
-          }, 600);
-        }, 300);
+          setPhase("exit");
+          onComplete?.();
+          sessionStorage.setItem("portfolio-loaded", "1");
+          setTimeout(() => setPhase("done"), 800);
+        }, 400);
       }
     };
     rafRef.current = requestAnimationFrame(animate);
@@ -54,100 +52,116 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
 
   if (!mounted || phase === "done") return null;
 
-  const circumference = 2 * Math.PI * 44;
-  const strokeOffset = circumference - (progress / 100) * circumference;
+  const nameChars = "Julie Ann Tiron".split("");
 
   return (
-    <div className={`loader-root ${phase === "reveal" ? "reveal" : ""} ${phase === "exit" ? "exit" : ""}`}>
-      {/* Animated grid background */}
-      <div className="loader-grid" />
-      <div className="loader-vignette" />
+    <AnimatePresence>
+      <motion.div
+          className="loader-root"
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Subtle grid bg */}
+          <div className="loader-grid" />
+          <div className="loader-vignette" />
 
-      {/* Floating particles */}
-      <div className="loader-particles">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <span
-            key={i}
-            className="loader-particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
-            }}
+          {/* Corner marks */}
+          <motion.div
+            className="loader-corner loader-corner-tl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
           />
-        ))}
-      </div>
-
-      {/* Corner marks */}
-      <div className="loader-corner loader-corner-tl" />
-      <div className="loader-corner loader-corner-tr" />
-      <div className="loader-corner loader-corner-bl" />
-      <div className="loader-corner loader-corner-br" />
-
-      <div className="loader-content">
-        {/* Animated logo */}
-        <div className="loader-logo-wrap">
-          <div className="loader-logo-glow" />
-          <div className="loader-logo-ring" />
-          <img
-            src="/images/logo.png"
-            alt="Logo"
-            width={64}
-            height={64}
-            className="loader-logo-img"
+          <motion.div
+            className="loader-corner loader-corner-tr"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
           />
-        </div>
+          <motion.div
+            className="loader-corner loader-corner-bl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          />
+          <motion.div
+            className="loader-corner loader-corner-br"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          />
 
-        {/* Circular progress ring */}
-        <div className="loader-ring-wrap">
-          <svg className="loader-ring" viewBox="0 0 100 100">
-            <circle
-              className="loader-ring-bg"
-              cx="50" cy="50" r="44"
-              strokeWidth="1"
-              fill="none"
-            />
-            <circle
-              className="loader-ring-progress"
-              cx="50" cy="50" r="44"
-              strokeWidth="1.5"
-              fill="none"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeOffset}
-              strokeLinecap="round"
-            />
-          </svg>
-          <div className="loader-ring-inner">
-            <span className="loader-ring-pct">{progress}</span>
+          <div className="loader-content">
+            {/* Staggered character reveal */}
+            <motion.div
+              className="loader-name-chars"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.04, delayChildren: 0.3 } },
+              }}
+            >
+              {nameChars.map((char, i) => (
+                <motion.span
+                  key={i}
+                  className={`loader-char ${i >= 9 ? "italic" : ""}`}
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -90 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      rotateX: 0,
+                      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                    },
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </motion.div>
+
+            {/* Subtitle badge */}
+            <motion.div
+              className="loader-badge"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.6 }}
+            >
+              Portfolio · 2026
+            </motion.div>
+
+            {/* Minimal progress line */}
+            <motion.div
+              className="loader-track-wrap"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ delay: 0.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              style={{ transformOrigin: "center" }}
+            >
+              <div className="loader-track">
+                <motion.div
+                  className="loader-bar"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <div className="loader-progress-ends">
+                <span className="loader-progress-label">LOADING</span>
+                <span className="loader-progress-pct">{progress}%</span>
+              </div>
+            </motion.div>
           </div>
-        </div>
 
-        {/* Name */}
-        <div className="loader-name">
-          <span className="first">Julie Ann</span>
-          <span className="last">Tiron</span>
-        </div>
-
-        {/* Badge */}
-        <div className="loader-badge">Portfolio · 2026</div>
-
-        {/* Progress bar */}
-        <div className="loader-track-wrap">
-          <div className="loader-track">
-            <div className="loader-bar" style={{ width: `${progress}%` }} />
-            <div className="loader-bar-glow" style={{ left: `${progress}%` }} />
-          </div>
-        </div>
-
-        {/* Status dots */}
-        <div className="loader-dots">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <span key={i} className={progress >= i * 20 + 10 ? "active" : ""} />
-          ))}
-        </div>
-      </div>
-
-      <div className="loader-footer">Loading Experience</div>
-    </div>
+          {/* Footer */}
+          <motion.div
+            className="loader-footer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+          >
+            Loading Experience
+          </motion.div>
+        </motion.div>
+    </AnimatePresence>
   );
 }
