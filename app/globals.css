@@ -464,22 +464,27 @@ body {
   overflow: hidden;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.65s ease, visibility 0.65s ease;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.loader-root.reveal {
+  /* Slight scale before exit */
 }
 
 .loader-root.exit {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: scale(1.02);
 }
 
 .loader-grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 150px 150px;
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
   animation: loaderGridFadeIn 1.2s ease forwards;
   opacity: 0;
 }
@@ -491,8 +496,33 @@ body {
 .loader-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 60% at 50% 50%, transparent 0%, rgba(0,0,0,0.85) 100%);
+  background: radial-gradient(ellipse 55% 55% at 50% 50%, transparent 0%, rgba(0,0,0,0.9) 100%);
   pointer-events: none;
+}
+
+/* Floating particles */
+.loader-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.loader-particle {
+  position: absolute;
+  bottom: -10px;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: loaderParticleFloat linear infinite;
+}
+
+@keyframes loaderParticleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
 }
 
 .loader-content {
@@ -504,26 +534,62 @@ body {
   gap: 0;
 }
 
-.loader-badge {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #b9b9b9;
-  margin-bottom: 28px;
+/* Circular progress ring */
+.loader-ring-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 32px;
   opacity: 0;
-  animation: loaderFadeSlideDown 0.8s ease 0.2s forwards;
+  animation: loaderFadeSlideUp 0.8s ease 0.2s forwards;
 }
 
-@keyframes loaderFadeSlideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+.loader-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.loader-ring-bg {
+  stroke: rgba(255, 255, 255, 0.06);
+}
+
+.loader-ring-progress {
+  stroke: rgba(255, 255, 255, 0.8);
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.loader-ring-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-ring-pct {
+  font-family: var(--font-mono), monospace;
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.loader-badge {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: loaderFadeIn 0.6s ease 0.6s forwards;
 }
 
 .loader-name {
   font-family: var(--font-heading), serif;
-  font-size: clamp(52px, 8vw, 88px);
+  font-size: clamp(44px, 7vw, 72px);
   font-weight: 400;
   line-height: 1;
   color: #ffffff;
@@ -531,43 +597,37 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.2em;
+  margin-bottom: 32px;
   opacity: 0;
-  animation: loaderFadeSlideUp 1s ease 0.4s forwards;
+  animation: loaderFadeSlideUp 1s ease 0.3s forwards;
 }
 
 .loader-name .first { font-weight: 600; }
-.loader-name .last  { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.55); }
-.loader-name .dot   { font-style: normal; font-weight: 400; color: rgba(255,255,255,0.3); }
+.loader-name .last  { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.5); }
 
 @keyframes loaderFadeSlideUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.loader-sep {
-  width: 0;
-  height: 1px;
-  background: #2a2825;
-  margin: 32px 0;
-  animation: loaderExpandLine 0.8s ease 0.9s forwards;
-}
-
-@keyframes loaderExpandLine {
-  to { width: 340px; }
+@keyframes loaderFadeSlideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .loader-track-wrap {
-  width: 340px;
+  width: min(340px, 80vw);
   opacity: 0;
-  animation: loaderFadeIn 0.6s ease 1.1s forwards;
+  animation: loaderFadeIn 0.6s ease 0.8s forwards;
 }
 
 .loader-track {
   width: 100%;
-  height: 1px;
-  background: #1a1a1a;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
   position: relative;
   overflow: hidden;
+  border-radius: 2px;
 }
 
 .loader-bar {
@@ -575,31 +635,20 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.8);
+  border-radius: 2px;
   transition: width 0.1s linear;
 }
 
-.loader-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
-}
-
-.loader-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #b9b9b9;
-}
-
-.loader-pct {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: #ffffff;
+.loader-bar-glow {
+  position: absolute;
+  top: -4px;
+  width: 12px;
+  height: 10px;
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+  transform: translateX(-50%);
+  transition: left 0.1s linear;
+  pointer-events: none;
 }
 
 @keyframes loaderFadeIn {
@@ -608,51 +657,52 @@ body {
 
 .loader-corner {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   opacity: 0;
-  animation: loaderFadeIn 1s ease 1.4s forwards;
+  animation: loaderFadeIn 1s ease 1s forwards;
 }
 
-.loader-corner-tl { top: 32px;    left: 32px;  border-top: 1px solid var(--text-secondary); border-left: 1px solid var(--text-secondary); }
-.loader-corner-tr { top: 32px;    right: 32px; border-top: 1px solid var(--text-secondary); border-right: 1px solid var(--text-secondary); }
-.loader-corner-bl { bottom: 32px; left: 32px;  border-bottom: 1px solid var(--text-secondary); border-left: 1px solid var(--text-secondary); }
-.loader-corner-br { bottom: 32px; right: 32px; border-bottom: 1px solid var(--text-secondary); border-right: 1px solid var(--text-secondary); }
+.loader-corner-tl { top: 24px;    left: 24px;  border-top: 1px solid rgba(255,255,255,0.15); border-left: 1px solid rgba(255,255,255,0.15); }
+.loader-corner-tr { top: 24px;    right: 24px; border-top: 1px solid rgba(255,255,255,0.15); border-right: 1px solid rgba(255,255,255,0.15); }
+.loader-corner-bl { bottom: 24px; left: 24px;  border-bottom: 1px solid rgba(255,255,255,0.15); border-left: 1px solid rgba(255,255,255,0.15); }
+.loader-corner-br { bottom: 24px; right: 24px; border-bottom: 1px solid rgba(255,255,255,0.15); border-right: 1px solid rgba(255,255,255,0.15); }
 
 .loader-footer {
   position: absolute;
-  bottom: 40px;
+  bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  font-weight: 400;
+  font-size: 9px;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #6f6f6f;
+  color: rgba(255, 255, 255, 0.25);
   white-space: nowrap;
   opacity: 0;
-  animation: loaderFadeIn 0.6s ease 1.6s forwards;
+  animation: loaderFadeIn 0.6s ease 1.2s forwards;
 }
 
 .loader-dots {
   display: flex;
-  gap: 5px;
-  margin-top: 28px;
+  gap: 6px;
+  margin-top: 20px;
   opacity: 0;
-  animation: loaderFadeIn 0.6s ease 1.4s forwards;
+  animation: loaderFadeIn 0.6s ease 1s forwards;
 }
 
 .loader-dots span {
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  transition: background 0.3s ease;
+  background: rgba(255,255,255,0.12);
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .loader-dots span.active {
   background: rgba(255,255,255,0.7);
+  transform: scale(1.3);
 }
 
 /* ── Education Card ──────────────────────────────────────── */
