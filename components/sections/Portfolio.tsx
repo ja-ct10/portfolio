@@ -183,7 +183,7 @@ export default function Portfolio() {
           <div className="portfolio-v2-header">
             <div>
               <div className="section-subtitle mb-2">05 - SELECTED WORK</div>
-              <h2 className="section-title">Portfolio<span className="portfolio-v2-period">.</span></h2>
+              <h2 className="section-title">Portfolio</h2>
             </div>
             <div className="portfolio-v2-counter">
               <Layers size={14} className="opacity-60" />
