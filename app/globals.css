@@ -7349,3 +7349,52 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
     gap: 2px;
   }
 }
+
+/* ── GitHub Activity Responsive ── */
+
+@media (max-width: 768px) {
+  .github-graph-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .github-graph-footer {
+    font-size: 9px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .github-graph-section {
+    padding: 16px 0;
+  }
+
+  .github-graph-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+  }
+
+  .github-graph-grid {
+    gap: 2px;
+  }
+
+  .github-graph-col {
+    gap: 2px;
+  }
+
+  .github-graph-label {
+    font-size: 10px;
+  }
+
+  .github-graph-link {
+    font-size: 9px;
+  }
+
+  .github-graph-footer {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+}
