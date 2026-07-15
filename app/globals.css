@@ -7265,30 +7265,28 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
 }
 
 .github-graph-wrap {
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scrollbar-width: none;
-}
-
-.github-graph-wrap::-webkit-scrollbar {
-  display: none;
+  width: 100%;
+  overflow: hidden;
 }
 
 .github-graph-grid {
   display: flex;
   gap: 3px;
-  min-width: max-content;
+  width: 100%;
+  transform-origin: left top;
 }
 
 .github-graph-col {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  flex: 1;
+  min-width: 0;
 }
 
 .github-graph-dot {
-  width: 10px;
-  height: 10px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 3px;
   transition: transform 0.15s ease;
 }
@@ -7336,11 +7334,6 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
 }
 
 @media (max-width: 640px) {
-  .github-graph-dot {
-    width: 8px;
-    height: 8px;
-  }
-
   .github-graph-grid {
     gap: 2px;
   }
@@ -7354,10 +7347,15 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
 
 @media (max-width: 768px) {
   .github-graph-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
     margin-bottom: 14px;
+  }
+
+  .github-graph-grid {
+    gap: 2px;
+  }
+
+  .github-graph-col {
+    gap: 2px;
   }
 
   .github-graph-footer {
@@ -7371,18 +7369,16 @@ textarea.contact-field-enhanced:not(:placeholder-shown) ~ .contact-float-label {
     padding: 16px 0;
   }
 
-  .github-graph-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 2px;
-  }
-
   .github-graph-grid {
-    gap: 2px;
+    gap: 1.5px;
   }
 
   .github-graph-col {
-    gap: 2px;
+    gap: 1.5px;
+  }
+
+  .github-graph-dot {
+    border-radius: 2px;
   }
 
   .github-graph-label {
