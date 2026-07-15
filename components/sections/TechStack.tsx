@@ -46,7 +46,7 @@ export default function TechStack() {
     <section id="tech-stack" ref={sectionRef}>
       <motion.div style={{ y: headingY }} className="techstack-header">
         <div>
-          <div className="section-subtitle mb-2">04 - CAPABILITIES</div>
+          <div className="section-subtitle mb-2">05 - CAPABILITIES</div>
           <h2 className="section-title">
             Tech Stack
           </h2>

@@ -114,7 +114,7 @@ export default function Gallery() {
   return (
     <>
       <section id="gallery" className="animate-fade-up delay-5" ref={sectionRef}>
-        <div className="section-subtitle">06 — Moments</div>
+        <div className="section-subtitle">07 — Moments</div>
 
         <motion.div style={{ y: headingY }}>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-5">

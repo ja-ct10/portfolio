@@ -12,6 +12,7 @@ import ScrollDown from "@/components/ui/ScrollDown";
 import Marquee from "@/components/ui/Marquee";
 import Navbar from "@/components/layout/Navbar";
 import Stats from "@/components/sections/Stats";
+import GitHubActivity from "@/components/sections/GitHubActivity";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 
@@ -125,6 +126,10 @@ export default function Home() {
 
         <Reveal className="pt-6 sm:pt-12 lg:pt-16 mb-5">
           <About />
+        </Reveal>
+
+        <Reveal className="pt-6 sm:pt-8 mb-5">
+          <GitHubActivity />
         </Reveal>
 
         <Reveal className="pt-6 sm:pt-8 mb-5">

@@ -29,7 +29,7 @@ export default function Education() {
   return (
     <section id="education" ref={sectionRef}>
       <motion.div style={{ y: headingY }}>
-        <div className="section-subtitle mb-2">03 - ACADEMIC BACKGROUND</div>
+        <div className="section-subtitle mb-2">04 - ACADEMIC BACKGROUND</div>
         <h2 className="section-title mb-8">Education<span style={{ color: "rgba(255,255,255,0.7)" }}>.</span></h2>
       </motion.div>
 

@@ -182,7 +182,7 @@ export default function Portfolio() {
           {/* Header */}
           <div className="portfolio-v2-header">
             <div>
-              <div className="section-subtitle mb-2">05 - SELECTED WORK</div>
+              <div className="section-subtitle mb-2">06 - SELECTED WORK</div>
               <h2 className="section-title">Portfolio</h2>
             </div>
             <div className="portfolio-v2-counter">
